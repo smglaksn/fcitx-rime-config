@@ -2,6 +2,7 @@
 <ui version="4.0">
  <class>MainUI</class>
  <widget class="QWidget" name="MainUI">
+   
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -10,18 +11,23 @@
     <height>366</height>
    </rect>
   </property>
+  
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  
   <property name="windowIcon">
-   <iconset theme="fcitx-unikey">
+   <iconset theme="fcitx-rime">
     <normaloff/>
    </iconset>
   </property>
+  
   <layout class="QHBoxLayout" name="horizontalLayout">
+    
    <item>
     <widget class="QTableView" name="macroTableView"/>
    </item>
+   
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
@@ -36,6 +42,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <widget class="QPushButton" name="deleteButton">
        <property name="text">
@@ -48,6 +55,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <widget class="QPushButton" name="clearButton">
        <property name="text">
@@ -60,6 +68,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <widget class="Line" name="line">
        <property name="orientation">
@@ -67,6 +76,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <widget class="QPushButton" name="importButton">
        <property name="text">
@@ -79,6 +89,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <widget class="QPushButton" name="exportButton">
        <property name="text">
@@ -91,6 +102,7 @@
        </property>
       </widget>
      </item>
+     
      <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
@@ -104,9 +116,11 @@
        </property>
       </spacer>
      </item>
+     
     </layout>
    </item>
   </layout>
+  
  </widget>
  <resources/>
  <connections/>
