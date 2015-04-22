@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project(FRCU)
+project(fcitx-rime-configtool)
 
 set(CMAKE_C_FLAGS "-Wall -Wextra -Wno-sign-compare -Wno-unused-parameter -fvisibility=hidden ${CMAKE_C_FLAGS}")
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-sign-compare -Wno-unused-parameter -fvisibility=hidden ${CMAKE_CXX_FLAGS}")
@@ -15,7 +15,6 @@ find_package(Fcitx 4.2.8 REQUIRED)
 find_package(Qt4 4.8 REQUIRED)
 pkg_check_modules(FCITX_QT "fcitx-qt>=4.2.8")
 
-add_subdirectory(rimekit)
 add_subdirectory(src)
 
 # uninstall target
