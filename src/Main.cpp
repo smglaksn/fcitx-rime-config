@@ -6,7 +6,7 @@
 #include <fcitx-qt/fcitxqtconfiguiplugin.h>
 
 #include "ConfigUtility.h"
-#include "main.h"
+#include "Main.h"
 
 FRCU::FRCU(QObject* parent) : FcitxQtConfigUIPlugin(parent){
 }

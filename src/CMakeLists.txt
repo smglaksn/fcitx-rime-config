@@ -1,9 +1,9 @@
 set(FRCU_SRCS
-  main.cpp
+  Main.cpp
   ConfigUtility.cpp)
 
 set(FRCU_HDRS
-  main.h
+  Main.h
   ConfigUtility.h)
 
 fcitx_translate_add_sources(
@@ -22,7 +22,7 @@ link_directories(
   ${FCITX_QT_LIBRARY_DIRS})
 
 qt4_wrap_cpp(FRCU_MOCS ${FRCU_HDRS})
-qt4_wrap_ui(FRCU_SRCS frcu.ui)
+qt4_wrap_ui(FRCU_SRCS FRCU.ui)
 
 add_library(fcitx-rime-config-utility
   MODULE ${FRCU_SRCS} ${FRCU_MOCS})

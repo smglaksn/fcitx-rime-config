@@ -4,8 +4,8 @@
 #include <QMessageBox>
 
 #include "ConfigUtility.h"
-#include "ui_frcu.h"
-#include "common.h"
+#include "ui_FRCU.h"
+#include "Common.h"
 
 namespace fcitx_rime{
   ConfigUtility::ConfigUtility(QWidget* parent) :
