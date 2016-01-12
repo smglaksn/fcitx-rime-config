@@ -1,15 +1,16 @@
-//
 // Author: Xu Zhao (i@xuzhao.net)
 //
 
-#ifndef FCITX_RIME_CONFIG_RIMEAPI_H
-#define FCITX_RIME_CONFIG_RIMEAPI_H
+#pragma once
 
 #include <string>
+#include <yaml-cpp/yaml.h>
+
 using namespace std;
 
 class RimeConfig {
-    string m_conf_path;
+ public:
+  RimeConfig(string conf_path);
+ private:
+  string m_conf_path;
 };
-
-#endif //FCITX_RIME_CONFIG_RIMEAPI_H

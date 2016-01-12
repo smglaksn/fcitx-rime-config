@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+mkdir build
 cd build/
 cmake ..
-make
+make && sudo make install && fcitx-qt-gui-wrapper rime/config
