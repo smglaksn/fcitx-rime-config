@@ -9,6 +9,7 @@ set(CMAKE_MODULE_LINKER_FLAGS "-Wl,--as-needed ${CMAKE_MODULE_LINKER_FLAGS}")
 # Dependencies
 find_package(Fcitx 4.2.8 REQUIRED)
 find_package(Qt4 4.8 REQUIRED)
+find_package(Rime REQUIRED)
 pkg_check_modules(FCITX_QT "fcitx-qt>=4.2.8")
 
 add_subdirectory(src)

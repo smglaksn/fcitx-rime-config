@@ -20,6 +20,7 @@ namespace fcitx_rime {
     QVBoxLayout* layout = new QVBoxLayout(this);
     FcitxQtKeySequenceWidget* keyseq1 = new FcitxQtKeySequenceWidget();
     layout->addWidget(keyseq1);
+    printf("Hello world !\n");
   }
   
   QString ConfigMain::icon() {
@@ -32,7 +33,6 @@ namespace fcitx_rime {
     return _("Fcitx Rime Config GUI Tool");
   }
   void ConfigMain::load() {
-    FILE *fp = NULL;
   }
   void ConfigMain::save() {
   }
