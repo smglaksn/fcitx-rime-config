@@ -8,6 +8,8 @@
 #include <fcitx-qt/fcitxqtconfiguiwidget.h>
 #include <fcitx-qt/fcitxqtkeysequencewidget.h>
 
+#include "lib/FcitxRimeConfig.h"
+
 namespace Ui {
   class MainUI;
 }
@@ -26,6 +28,7 @@ namespace fcitx_rime {
     QString icon();
   private:
     Ui::MainUI* m_ui;
+    FcitxRime* rime;
     void test();
   };
   

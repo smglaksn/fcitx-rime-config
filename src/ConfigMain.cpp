@@ -6,13 +6,14 @@
 #include "ui_ConfigMain.h"
 #include "Common.h"
 
-#include "lib/FcitxRimeConfig.h"
 
 namespace fcitx_rime {
   ConfigMain::ConfigMain(QWidget* parent) :
     FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI) {
     this->setMinimumSize(500, 500);
     m_ui->setupUi(this);
+    this->rime = FcitxRimeConfigCreate();
+    FcitxRimeConfigStart(this->rime);
     this->test();
   }
   ConfigMain::~ConfigMain() {
@@ -22,7 +23,6 @@ namespace fcitx_rime {
     QVBoxLayout* layout = new QVBoxLayout(this);
     FcitxQtKeySequenceWidget* keyseq1 = new FcitxQtKeySequenceWidget();
     layout->addWidget(keyseq1);
-    printf("Hello world !\n");
   }
   
   QString ConfigMain::icon() {
@@ -39,6 +39,6 @@ namespace fcitx_rime {
   void ConfigMain::save() {
   }
   void ConfigMain::test() {
-    FcitxRimeConfigCreate();
+        
   }
 }

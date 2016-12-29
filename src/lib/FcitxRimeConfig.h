@@ -11,15 +11,17 @@
 extern "C" {
 #endif
 
+  typedef struct _FcitxRime {
+    RimeApi* api;
+    boolean firstRun;
+  } FcitxRime;
+  
+  FcitxRime* FcitxRimeConfigCreate();
+  void FcitxRimeConfigStart(FcitxRime* rime);
 
-typedef struct _FcitxRime {
-  RimeApi* api;
-  boolean firstRun;
-} FcitxRime;
-
-static FcitxRime* FcitxRimeConfigCreate();
-static void FcitxRimeConfigStart();
-static void FcitxRimeConfigReload();
+  void FcitxRimeConfigOpen(FcitxRime* rime);
+  void FcitxRimeConfigReload();
+  
 
 #ifdef __cplusplus
 }
