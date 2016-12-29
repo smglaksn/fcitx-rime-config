@@ -19,9 +19,8 @@ extern "C" {
   FcitxRime* FcitxRimeConfigCreate();
   void FcitxRimeConfigStart(FcitxRime* rime);
 
-  void FcitxRimeConfigOpen(FcitxRime* rime);
-  void FcitxRimeConfigReload();
-  
+  RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
+  void FcitxRimeConfigReload();  
 
 #ifdef __cplusplus
 }

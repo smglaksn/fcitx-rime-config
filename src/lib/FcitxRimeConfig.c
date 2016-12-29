@@ -37,7 +37,15 @@ extern "C" {
     rime->api->initialize(&fcitx_rime_traits);
   }
 
-  void FcitxRimeConfigOpen(FcitxRime* rime) {
+  RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime) {
+    RimeConfig* fcitx_rime_config_default = fcitx_utils_malloc0(sizeof(RimeConfig));
+    Bool suc = rime->api->config_open("default", fcitx_rime_config_default);
+    if (!suc) {
+      // TODO: log in fcitx log dir
+      fprintf(stderr, "[fcitx-rime-config] Cannot find default config!\n");
+      return NULL;
+    }
+    return fcitx_rime_config_default;
   }
 
   

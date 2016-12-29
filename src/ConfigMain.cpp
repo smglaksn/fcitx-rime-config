@@ -38,7 +38,12 @@ namespace fcitx_rime {
   }
   void ConfigMain::save() {
   }
+  
   void ConfigMain::test() {
-        
+    RimeConfig* fcitx_rime_config_default = FcitxRimeConfigOpenDefault(this->rime);
+    int page_size = 0;
+    bool suc = this->rime->api->config_get_int(fcitx_rime_config_default, "menu.page_size", &page_size);
+    printf("Success? %d\n", suc);
+    printf("%d\n", page_size);
   }
 }
