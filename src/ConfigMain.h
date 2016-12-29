@@ -26,6 +26,7 @@ namespace fcitx_rime {
     QString icon();
   private:
     Ui::MainUI* m_ui;
+    void test();
   };
   
 }

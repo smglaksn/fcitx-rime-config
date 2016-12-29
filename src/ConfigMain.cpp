@@ -6,12 +6,14 @@
 #include "ui_ConfigMain.h"
 #include "Common.h"
 
+#include "lib/FcitxRimeConfig.h"
+
 namespace fcitx_rime {
   ConfigMain::ConfigMain(QWidget* parent) :
     FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI) {
     this->setMinimumSize(500, 500);
-// createConfigOptionWidget(m_ui->MainUI->findChild<QHBoxLayout*>("horizontalLayout_general"));
     m_ui->setupUi(this);
+    this->test();
   }
   ConfigMain::~ConfigMain() {
     delete m_ui;
@@ -35,5 +37,8 @@ namespace fcitx_rime {
   void ConfigMain::load() {
   }
   void ConfigMain::save() {
+  }
+  void ConfigMain::test() {
+    FcitxRimeConfigCreate();
   }
 }
