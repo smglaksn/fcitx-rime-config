@@ -50,10 +50,17 @@ extern "C" {
     return fcitx_rime_config_default;
   }
   
-  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config) {
+  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, int keys_size) {
     size_t s = RimeConfigListSize(config, "switcher/hotkeys");
     RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
     RimeConfigBeginList(iterator, config, "switcher/hotkeys");
+    if (s > keys_size) {s = keys_size;} // we only show first two toggle keys
+    for(size_t i = 0; i < s; i ++) {
+        RimeConfigNext(iterator);
+        char* mem = fcitx_utils_malloc0(30);
+        RimeConfigGetString(config, iterator->path, mem, 30); // find out maximum size
+        keys[i] = mem;
+    }
     fcitx_utils_free(iterator);
   }
 

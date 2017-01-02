@@ -84,7 +84,10 @@ namespace fcitx_rime {
       this->model->candidate_per_word = page_size;
     }
     // load toggle keys
-    FcitxRimeConfigGetToggleKeys(this->rime, this->rime->default_conf);
+    int keys_size = 2;
+    char** keys = (char**)fcitx_utils_malloc0(sizeof(char*) * keys_size);
+    FcitxRimeConfigGetToggleKeys(this->rime, this->rime->default_conf, keys, keys_size);
+    // convert keys[i] to value acceptable by FcitxQtKeySequenceWidget
   }
   
   void ConfigMain::test() {
