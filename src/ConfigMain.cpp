@@ -1,49 +1,94 @@
 #include <fcitx-config/xdg.h>
 
 #include <fcitx-qt/fcitxqtkeysequencewidget.h>
+#include <QtConcurrentRun>
+#include <QFutureWatcher>
+#include <QDialogButtonBox>
 
 #include "ConfigMain.h"
 #include "ui_ConfigMain.h"
 #include "Common.h"
 
+// TODO: when failed-read happens, disable ui
+// TODO: when failed-save happense, disable ui and show reason
 
 namespace fcitx_rime {
   ConfigMain::ConfigMain(QWidget* parent) :
-    FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI) {
+    FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI),
+    model(new FcitxRimeConfigDataModel()) {
     this->setMinimumSize(500, 500);
     m_ui->setupUi(this);
+    m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
+    connect(m_ui->cand_cnt_spinbox, SIGNAL(valueChanged(int)), 
+            this, SLOT(stateChanged()));
     this->rime = FcitxRimeConfigCreate();
     FcitxRimeConfigStart(this->rime);
+    this->loadDefaultConfigFromYaml();
+    this->modelToUi();
     this->test();
   }
+  
   ConfigMain::~ConfigMain() {
+    FcitxRimeDestroy(this->rime);
+    delete model;
     delete m_ui;
   }
-  void ConfigMain::createGeneralWidget() {
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    FcitxQtKeySequenceWidget* keyseq1 = new FcitxQtKeySequenceWidget();
-    layout->addWidget(keyseq1);
+  
+  void ConfigMain::stateChanged() {
+    emit changed(true);
   }
   
   QString ConfigMain::icon() {
     return "fcitx-rime";
   }
+  
   QString ConfigMain::addon() {
     return "fcitx-rime";
   }
+  
   QString ConfigMain::title() {
     return _("Fcitx Rime Config GUI Tool");
   }
+  
   void ConfigMain::load() {
   }
+  
+  void ConfigMain::uiToModel() {
+    model->candidate_per_word = m_ui->cand_cnt_spinbox->value();
+  }
+  
   void ConfigMain::save() {
+    uiToModel();
+    QFutureWatcher<void>* futureWatcher = new QFutureWatcher<void>(this);
+    futureWatcher->setFuture(QtConcurrent::run<void>(this, &ConfigMain::modelToYaml));
+    connect(futureWatcher, SIGNAL(finished()), this, SIGNAL(saveFinished()));
+  }
+  
+  void ConfigMain::modelToUi() {
+    m_ui->cand_cnt_spinbox->setValue(this->model->candidate_per_word);
+  }
+
+  void ConfigMain::modelToYaml() {
+    this->rime->api->config_set_int(this->rime->default_conf,
+					       "menu/page_size", this->model->candidate_per_word);
+    FcitxRimeConfigSync(this->rime);
+    return;
+  }
+  
+  void ConfigMain::loadDefaultConfigFromYaml() {
+    FcitxRimeConfigOpenDefault(this->rime);
+    // load page size
+    int page_size = 0;
+    bool suc = this->rime->api->config_get_int(this->rime->default_conf, "menu/page_size", &page_size);
+    if(suc) {
+      this->model->candidate_per_word = page_size;
+    }
+    // load toggle keys
+    FcitxRimeConfigGetToggleKeys(this->rime, this->rime->default_conf);
   }
   
   void ConfigMain::test() {
-    RimeConfig* fcitx_rime_config_default = FcitxRimeConfigOpenDefault(this->rime);
-    int page_size = 0;
-    bool suc = this->rime->api->config_get_int(fcitx_rime_config_default, "menu.page_size", &page_size);
-    printf("Success? %d\n", suc);
-    printf("%d\n", page_size);
+    
   }
+
 }

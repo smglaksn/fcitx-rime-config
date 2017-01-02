@@ -13,6 +13,7 @@ extern "C" {
 
   typedef struct _FcitxRime {
     RimeApi* api;
+    RimeConfig* default_conf;
     boolean firstRun;
   } FcitxRime;
   
@@ -20,7 +21,10 @@ extern "C" {
   void FcitxRimeConfigStart(FcitxRime* rime);
 
   RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
-  void FcitxRimeConfigReload();  
+  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config);
+  void FcitxRimeConfigSync(FcitxRime* rime);
+  void FcitxRimeDestroy(FcitxRime* rime);
+  
 
 #ifdef __cplusplus
 }

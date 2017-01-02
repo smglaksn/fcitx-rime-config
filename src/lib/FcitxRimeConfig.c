@@ -8,6 +8,7 @@ extern "C" {
     FcitxRime* rime = (FcitxRime*) fcitx_utils_malloc0(sizeof(FcitxRime));
     rime->api = rime_get_api();
     rime->firstRun = true;
+    rime->default_conf = NULL;
     if (!rime->api) {
       free(rime);
       return NULL;
@@ -45,9 +46,32 @@ extern "C" {
       fprintf(stderr, "[fcitx-rime-config] Cannot find default config!\n");
       return NULL;
     }
+    rime->default_conf = fcitx_rime_config_default;
     return fcitx_rime_config_default;
   }
+  
+  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config) {
+    size_t s = RimeConfigListSize(config, "switcher/hotkeys");
+    RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
+    RimeConfigBeginList(iterator, config, "switcher/hotkeys");
+    // printf("here, %s\n", iterator->list->GetValue());
+    fcitx_utils_free(iterator);
+  }
 
+  void FcitxRimeDestroy(FcitxRime* rime) {
+    RimeConfigClose(rime->default_conf);
+    rime->api->finalize();
+    fcitx_utils_free(rime);
+  }
+  
+  // Write into config file and restart rime
+  void FcitxRimeConfigSync(FcitxRime* rime) {
+    RimeStartMaintenanceOnWorkspaceChange();
+    RimeConfigClose(rime->default_conf);
+    rime->api->finalize();
+    FcitxRimeConfigStart(rime);
+    FcitxRimeConfigOpenDefault(rime);
+  }
   
 #ifdef __cplusplus
 }

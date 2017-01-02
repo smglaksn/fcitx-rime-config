@@ -1,11 +1,13 @@
 set(FRCU_SRCS
   Main.cpp
   ConfigMain.cpp
+  Model.cpp
   lib/FcitxRimeConfig.c)
 
 set(FRCU_HDRS
   Main.h
   ConfigMain.h
+  Model.h
   lib/FcitxRimeConfig.h)
 
 fcitx_translate_add_sources(

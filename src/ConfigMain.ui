@@ -21,12 +21,6 @@
     <layout class="QVBoxLayout" name="verticalLayout">
       <item>
 	<widget class="QTabWidget" name="frcu_tab">
-	  <property name="toolTip">
-	    <string />
-	  </property>
-	  <property name="currentIndex">
-	    <number>0</number>
-	  </property>
 	  <widget class="QWidget" name="general_tab">
 	    <attribute name="title">
 	      <string>General</string>
@@ -57,7 +51,7 @@
 		    </widget>
 		  </item>
 		  <item>
-		     <widget class="QSpinBox" name="candidate_word_number_spinbox" >
+		     <widget class="QSpinBox" name="cand_cnt_spinbox" >
 		       <property name="objectName" >
 			 <string notr="true" >CandidateWordNumber</string>
 		       </property>
@@ -80,17 +74,17 @@
 	</widget>
       </item>
       <item>
-	<spacer name="horizontalSpacer">
-	  <property name="orientation">
-	    <enum>Qt::Horizontal</enum>
-	  </property>
-	  <property name="sizeHint" stdset="0">
-	    <size>
-	      <width>40</width>
-	      <height>20</height>
-	    </size>
-	  </property>
-	</spacer>
+      	<spacer name="horizontalSpacer">
+      	  <property name="orientation">
+      	    <enum>Qt::Horizontal</enum>
+      	  </property>
+      	  <property name="sizeHint" stdset="0">
+      	    <size>
+      	      <width>40</width>
+      	      <height>20</height>
+      	    </size>
+      	  </property>
+      	</spacer>
       </item>
     </layout>
   </widget>

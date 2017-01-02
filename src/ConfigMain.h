@@ -8,6 +8,7 @@
 #include <fcitx-qt/fcitxqtconfiguiwidget.h>
 #include <fcitx-qt/fcitxqtkeysequencewidget.h>
 
+#include "Model.h"
 #include "lib/FcitxRimeConfig.h"
 
 namespace Ui {
@@ -15,6 +16,7 @@ namespace Ui {
 }
 
 namespace fcitx_rime {
+  
   class ConfigMain : public FcitxQtConfigUIWidget {
     Q_OBJECT
   public:
@@ -23,13 +25,20 @@ namespace fcitx_rime {
     ~ConfigMain();
     void load();
     void save();
-    void createGeneralWidget();
+    
     QString addon();
     QString icon();
+  public slots:
+    void stateChanged();
   private:
     Ui::MainUI* m_ui;
     FcitxRime* rime;
+    FcitxRimeConfigDataModel* model;
     void test();
+    void loadDefaultConfigFromYaml();
+    void uiToModel();
+    void modelToUi();
+    void modelToYaml();
   };
   
 }

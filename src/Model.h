@@ -5,10 +5,10 @@
 #include <rime_api.h>
 
 namespace fcitx_rime {
-  class FcitxRimeConfigData : public QObject {
+  class FcitxRimeConfigDataModel : public QObject {
     Q_OBJECT
     public:
-    
+    int candidate_per_word;
     private:
     
   };
