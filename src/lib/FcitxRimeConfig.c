@@ -43,7 +43,7 @@ extern "C" {
     Bool suc = rime->api->config_open("default", fcitx_rime_config_default);
     if (!suc) {
       // TODO: log in fcitx log dir
-      fprintf(stderr, "[fcitx-rime-config] Cannot find default config!\n");
+      fprintf(stderr, "[fcitx-rime-config] Cannot find default.yaml config file in RIME config dir.\n");
       return NULL;
     }
     rime->default_conf = fcitx_rime_config_default;
@@ -54,7 +54,6 @@ extern "C" {
     size_t s = RimeConfigListSize(config, "switcher/hotkeys");
     RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
     RimeConfigBeginList(iterator, config, "switcher/hotkeys");
-    // printf("here, %s\n", iterator->list->GetValue());
     fcitx_utils_free(iterator);
   }
 
