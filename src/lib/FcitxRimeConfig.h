@@ -21,11 +21,13 @@ extern "C" {
   void FcitxRimeConfigStart(FcitxRime* rime);
 
   RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
-  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, int keys_size);
+  void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size);
   void FcitxRimeConfigSync(FcitxRime* rime);
   void FcitxRimeDestroy(FcitxRime* rime);
-  
+  void FcitxRimeKeySeqToFcitxKeySeq(char* rime_key, char* fcitx_key);
+  void FcitxKeySeqToRimeKeySeq(char* fcitx_key, char* rime_key);
 
 #ifdef __cplusplus
 }
 #endif
+

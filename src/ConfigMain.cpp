@@ -84,10 +84,21 @@ namespace fcitx_rime {
       this->model->candidate_per_word = page_size;
     }
     // load toggle keys
-    int keys_size = 2;
+    size_t keys_size = 2;
     char** keys = (char**)fcitx_utils_malloc0(sizeof(char*) * keys_size);
     FcitxRimeConfigGetToggleKeys(this->rime, this->rime->default_conf, keys, keys_size);
-    // convert keys[i] to value acceptable by FcitxQtKeySequenceWidget
+    setFcitxQtKeySeq(keys[0], m_ui->toggle_shortcut);
+    setFcitxQtKeySeq(keys[1], m_ui->toggle_shortcut_2);
+    fcitx_utils_free(keys);
+  }
+  
+  void ConfigMain::setFcitxQtKeySeq(char* rime_key, FcitxQtKeySequenceWidget*& widget) {
+    char* fcitx_key = (char*)fcitx_utils_malloc0(30);
+    FcitxRimeKeySeqToFcitxKeySeq(rime_key, fcitx_key);
+    QKeySequence qtkey(tr(fcitx_key));
+    widget->setKeySequence(qtkey);
+    fcitx_utils_free(fcitx_key);
+    fcitx_utils_free(rime_key);
   }
   
   void ConfigMain::test() {
@@ -95,3 +106,4 @@ namespace fcitx_rime {
   }
 
 }
+;
