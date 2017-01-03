@@ -36,7 +36,7 @@ namespace fcitx_rime {
     FcitxRimeConfigDataModel* model;
     void test();
     void loadDefaultConfigFromYaml();
-    void setFcitxQtKeySeq(char* rime_key, FcitxQtKeySequenceWidget*& widget);
+    void setFcitxQtKeySeq(char* rime_key, FcitxQtKeySequenceWidget*& widget, char* model_keyseq);
     void uiToModel();
     void modelToUi();
     void modelToYaml();

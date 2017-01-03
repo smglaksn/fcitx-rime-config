@@ -81,9 +81,51 @@ extern "C" {
   }
   
   void FcitxRimeKeySeqToFcitxKeySeq(char* rime_key, char* fcitx_key) {
-    strcat(fcitx_key, "Ctrl+p");
+    size_t index = 0;
+    char temp[30];
+    memset(temp, 0, sizeof(temp));
+    size_t temp_index = 0;
+    while(index <= strlen(rime_key)) {
+        if(rime_key[index] == '+') {
+            char* f_key = NULL;
+            RimeToFcitxKeyMap(temp, &f_key);
+            strcat(fcitx_key, f_key);
+            strcat(fcitx_key, "+");
+            memset(temp, 0, sizeof(temp));
+            temp_index = 0;
+        } else if (index == strlen(rime_key)) {
+            char* f_key = NULL;
+            RimeToFcitxKeyMap(temp, &f_key);
+            strcat(fcitx_key, f_key);
+        } else {
+            temp[temp_index] = rime_key[index];
+            temp_index ++;
+        }
+        index ++;
+    }
     return;
   }
+  
+  static void RimeToFcitxKeyMap(char* rime_key, char** fcitx_key) {    
+    if(strcmp(rime_key, "Control") == 0) {
+        *fcitx_key = "Ctrl";
+    } else if(strcmp(rime_key, "grave") == 0) {
+        *fcitx_key = "`";
+    } else {
+        *fcitx_key = rime_key;
+    }
+  }
+  
+  static void FcitxToRimeKeyMap(char* fcitx_key, char** rime_key) {
+    if(strcmp(fcitx_key, "Ctrl") == 0) {
+        *rime_key = "Control";
+    } else if(strcmp(fcitx_key, "`") == 0) {
+        *rime_key = "grave";
+    } else {
+        *rime_key = fcitx_key;
+    }
+  }
+  
   
 #ifdef __cplusplus
 }
