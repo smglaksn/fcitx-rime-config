@@ -50,17 +50,45 @@ extern "C" {
     return fcitx_rime_config_default;
   }
   
+  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1) {
+    size_t s = RimeConfigListSize(config, "switcher/hotkeys");
+    RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
+    RimeConfigBeginList(iterator, config, "switcher/hotkeys");
+    for(size_t i = 0; i < s; i ++) {
+        RimeConfigNext(iterator);
+        char key_rime[30];
+        memset(key_rime, 0, sizeof(key_rime));
+        if(i == 0) {
+          printf("Saving %s\n", key0);
+          FcitxKeySeqToRimeKeySeq(key0, key_rime);
+          printf("Converted %s\n", key_rime);
+          RimeConfigSetString(config, iterator->path, key_rime);    
+        } else if (i == 1) {
+          FcitxKeySeqToRimeKeySeq(key1, key_rime);
+          RimeConfigSetString(config, iterator->path, key_rime);
+        } else {
+          RimeConfigSetString(config, iterator->path, "");
+        }
+    }
+    fcitx_utils_free(iterator);
+  }
+  
   void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size) {
     size_t s = RimeConfigListSize(config, "switcher/hotkeys");
     RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
     RimeConfigBeginList(iterator, config, "switcher/hotkeys");
-    if (s > keys_size) {s = keys_size;} // we only show first two toggle keys
     for(size_t i = 0; i < s; i ++) {
         RimeConfigNext(iterator);
         // TODO: find out maximum size of key sequence
-        char* mem = fcitx_utils_malloc0(30);
-        RimeConfigGetString(config, iterator->path, mem, 30); 
-        keys[i] = mem;
+        if (i >= keys_size) {
+          // RimeConfigSetString(config, iterator->path, NULL);
+          RimeConfigEnd(iterator);
+          break;
+        } else {
+          char* mem = fcitx_utils_malloc0(30);
+          RimeConfigGetString(config, iterator->path, mem, 30); 
+          keys[i] = mem;
+        }
     }
     fcitx_utils_free(iterator);
   }
@@ -79,6 +107,8 @@ extern "C" {
     FcitxRimeConfigStart(rime);
     FcitxRimeConfigOpenDefault(rime);
   }
+  
+  // Static functions
   
   void FcitxRimeKeySeqToFcitxKeySeq(char* rime_key, char* fcitx_key) {
     size_t index = 0;
@@ -104,6 +134,32 @@ extern "C" {
         index ++;
     }
     return;
+  }
+  
+  void FcitxKeySeqToRimeKeySeq(char* fcitx_key, char* rime_key) {
+    size_t index = 0;
+    char temp[30];
+    memset(temp, 0, sizeof(temp));
+    size_t temp_index = 0;
+    while(index <= strlen(fcitx_key)) {
+        if(fcitx_key[index] == '+') {
+            char* f_key = NULL;
+            FcitxToRimeKeyMap(temp, &f_key);
+            strcat(rime_key, f_key);
+            strcat(rime_key, "+");
+            memset(temp, 0, sizeof(temp));
+            temp_index = 0;
+        } else if (index == strlen(fcitx_key)) {
+            char* f_key = NULL;
+            RimeToFcitxKeyMap(temp, &f_key);
+            strcat(rime_key, f_key);
+        } else {
+            temp[temp_index] = fcitx_key[index];
+            temp_index ++;
+        }
+        index ++;
+    }
+    return;    
   }
   
   static void RimeToFcitxKeyMap(char* rime_key, char** fcitx_key) {    

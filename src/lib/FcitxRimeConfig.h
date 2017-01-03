@@ -26,6 +26,7 @@ extern "C" {
   void FcitxRimeDestroy(FcitxRime* rime);
   void FcitxRimeKeySeqToFcitxKeySeq(char* rime_key, char* fcitx_key);
   void FcitxKeySeqToRimeKeySeq(char* fcitx_key, char* rime_key);
+  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1);
   
   // private util functions
   static void FcitxToRimeKeyMap(char* fcitx_key, char** rime_key);

@@ -29,6 +29,7 @@ namespace fcitx_rime {
     QString addon();
     QString icon();
   public slots:
+    void keytoggleChanged();
     void stateChanged();
   private:
     Ui::MainUI* m_ui;

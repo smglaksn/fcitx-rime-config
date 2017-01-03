@@ -22,7 +22,9 @@ namespace fcitx_rime {
     connect(m_ui->cand_cnt_spinbox, SIGNAL(valueChanged(int)), 
             this, SLOT(stateChanged()));
     connect(m_ui->toggle_shortcut, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
-            this, SLOT(stateChanged()));
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->toggle_shortcut_2, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
     this->rime = FcitxRimeConfigCreate();
     FcitxRimeConfigStart(this->rime);
     this->loadDefaultConfigFromYaml();
@@ -34,6 +36,10 @@ namespace fcitx_rime {
     FcitxRimeDestroy(this->rime);
     delete model;
     delete m_ui;
+  }
+  
+  void ConfigMain::keytoggleChanged() {
+    stateChanged();
   }
   
   void ConfigMain::stateChanged() {
@@ -57,6 +63,10 @@ namespace fcitx_rime {
   
   void ConfigMain::uiToModel() {
     model->candidate_per_word = m_ui->cand_cnt_spinbox->value();
+    memset(model->toggle_key0, 0, sizeof(model->toggle_key0));
+    strcpy(model->toggle_key0, m_ui->toggle_shortcut->keySequence().toString().toStdString().c_str());
+    memset(model->toggle_key1, 0, sizeof(model->toggle_key1));
+    strcpy(model->toggle_key1, m_ui->toggle_shortcut_2->keySequence().toString().toStdString().c_str());
   }
   
   void ConfigMain::save() {
@@ -74,7 +84,7 @@ namespace fcitx_rime {
     // save candidate_per_word
     this->rime->api->config_set_int(this->rime->default_conf,
 					       "menu/page_size", this->model->candidate_per_word);
-    // save toggle keys
+    FcitxRimeConfigSetToggleKeys(this->rime, this->rime->default_conf, model->toggle_key0, model->toggle_key1);
     FcitxRimeConfigSync(this->rime);
     return;
   }
@@ -107,5 +117,4 @@ namespace fcitx_rime {
     
   }
 
-}
-;
+};
