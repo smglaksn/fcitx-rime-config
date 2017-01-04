@@ -1,5 +1,8 @@
 #include "FcitxRimeConfig.h"
 #include "assert.h"
+#include "fcitx-config/xdg.h"
+#include "fcitx-utils/utils.h"
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -8,7 +11,7 @@ extern "C" {
   FcitxRime* FcitxRimeConfigCreate() {
     FcitxRime* rime = (FcitxRime*) fcitx_utils_malloc0(sizeof(FcitxRime));
     rime->api = rime_get_api();
-    rime->firstRun = true;
+    rime->firstRun = True;
     rime->default_conf = NULL;
     if (!rime->api) {
       free(rime);
@@ -34,7 +37,7 @@ extern "C" {
     fcitx_rime_traits.distribution_version = "0.0.1";
     if(rime->firstRun) {
       rime->api->setup(&fcitx_rime_traits);
-      rime->firstRun = false;
+      rime->firstRun = False;
     }
     rime->api->initialize(&fcitx_rime_traits);
   }

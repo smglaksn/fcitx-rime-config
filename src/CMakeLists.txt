@@ -2,7 +2,8 @@ set(FRCU_SRCS
   Main.cpp
   ConfigMain.cpp
   Model.cpp
-  lib/FcitxRimeConfig.c)
+  lib/FcitxRimeConfig.c
+  fcitx-utils/cutf8.cpp)
 
 set(FRCU_HDRS
   Main.h

@@ -24,6 +24,7 @@
 #ifndef _FCITX_UTILS_KEYNAMETABLE_H_
 #define _FCITX_UTILS_KEYNAMETABLE_H_
 
+#include <stdint.h>
 #include "macros.h"
 
 FCITX_C_DECL_BEGIN
@@ -4582,7 +4583,7 @@ static const uint32_t keyValueByNameOffset[] _FCITX_UNUSED_ =
 0x10001b6
 };
 
-static const struct KeyNameOffsetByValue {
+const static struct KeyNameOffsetByValue {
     uint32_t sym;
     uint16_t offset;
 } keyNameOffsetByValue[] _FCITX_UNUSED_ = {

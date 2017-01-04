@@ -27,9 +27,8 @@ namespace fcitx_rime {
             this, SLOT(keytoggleChanged()));
     this->rime = FcitxRimeConfigCreate();
     FcitxRimeConfigStart(this->rime);
-    this->loadDefaultConfigFromYaml();
+    this->yamlToModel();
     this->modelToUi();
-    this->test();
   }
   
   ConfigMain::~ConfigMain() {
@@ -76,8 +75,8 @@ namespace fcitx_rime {
   
   void ConfigMain::modelToUi() {
     m_ui->cand_cnt_spinbox->setValue(this->model->candidate_per_word);
-    m_ui->toggle_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key0.sym, model->toggle_key0.state)));
-    m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym, model->toggle_key1.state)));
+    m_ui->toggle_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key0.sym_, model->toggle_key0.states_)));
+    m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym_, model->toggle_key1.states_)));
   }
 
   void ConfigMain::modelToYaml() {
@@ -100,8 +99,8 @@ namespace fcitx_rime {
     size_t keys_size = 2;
     char** keys = (char**)fcitx_utils_malloc0(sizeof(char*) * keys_size);
     FcitxRimeConfigGetToggleKeys(this->rime, this->rime->default_conf, keys, keys_size);
-    setFcitxQtKeySeq(keys[0], m_ui->toggle_shortcut);
-    setFcitxQtKeySeq(keys[1], m_ui->toggle_shortcut_2);
+    setFcitxQtKeySeq(keys[0], model->toggle_key0);
+    setFcitxQtKeySeq(keys[1], model->toggle_key1);
     fcitx_utils_free(keys);
   }
   
@@ -109,10 +108,6 @@ namespace fcitx_rime {
     // from state and sym number to Qt key seq
     keyseq = FcitxKeySeq(rime_key);
     fcitx_utils_free(rime_key);
-  }
-  
-  void ConfigMain::test() {
-    
   }
 
 };

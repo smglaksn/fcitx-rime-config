@@ -1,10 +1,5 @@
 #pragma once
 
-#include <fcitx/instance.h>
-#include <fcitx/context.h>
-#include <fcitx/candidate.h>
-#include <fcitx/hook.h>
-#include <fcitx-config/xdg.h>
 #include <rime_api.h>
 
 #ifdef __cplusplus
@@ -14,7 +9,7 @@ extern "C" {
   typedef struct _FcitxRime {
     RimeApi* api;
     RimeConfig* default_conf;
-    boolean firstRun;
+    Bool firstRun;
   } FcitxRime;
   
   // public apis

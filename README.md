@@ -12,8 +12,6 @@ This is a GUI config tool for fcitx-rime.
 - Customize schemas
 - Default schema
 
-
-
 ## TODOs
 
 - Migrate to Qt5
@@ -22,6 +20,11 @@ This is a GUI config tool for fcitx-rime.
 ## BuildRequires
 
 - fcitx-devel
+- librime-devel1
 
 ## Requires
+
+- fcitx
+- fcitx-rime
+- fcitx-qt
 

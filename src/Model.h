@@ -1,24 +1,27 @@
 #pragma once
-#include <QHash>
 
-#include <fcitx-config/fcitx-config.h>
 #include <rime_api.h>
 
+#include "fcitx-utils/flags.h"
 #include "fcitx-utils/keysym.h"
+#include "fcitx-utils/keysymgen.h"
 #include <qkeysequence.h>
 
 namespace fcitx_rime {
+  typedef fcitx::Flags<fcitx::KeyState> KeyStates;
+  typedef FcitxKeySym KeySym;
   class FcitxKeySeq {
   public:
-    FcitxKeyState state;
-    int sym;
+    KeyStates states_;
+    KeySym sym_;
     FcitxKeySeq();
     FcitxKeySeq(const char* keyseq);
     FcitxKeySeq(const QKeySequence qkey);
     char* toString();
+    KeySym keySymFromString(const char* keyString);
+    KeySym keySymFromUnicode(uint32_t wc);
   };
-  class FcitxRimeConfigDataModel : public QObject {
-    Q_OBJECT
+  class FcitxRimeConfigDataModel {
     public:
     FcitxKeySeq toggle_key0;
     FcitxKeySeq toggle_key1;
