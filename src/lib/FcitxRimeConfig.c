@@ -59,12 +59,14 @@ extern "C" {
         char key_rime[30];
         memset(key_rime, 0, sizeof(key_rime));
         if(i == 0) {
-          printf("Saving %s\n", key0);
+          printf("Saving key0 %s\n", key0);
           FcitxKeySeqToRimeKeySeq(key0, key_rime);
           printf("Converted %s\n", key_rime);
           RimeConfigSetString(config, iterator->path, key_rime);    
         } else if (i == 1) {
+	  printf("Saving key1 %s\n", key1);
           FcitxKeySeqToRimeKeySeq(key1, key_rime);
+	  printf("Converted %s\n", key_rime);
           RimeConfigSetString(config, iterator->path, key_rime);
         } else {
           RimeConfigSetString(config, iterator->path, "");
@@ -151,7 +153,7 @@ extern "C" {
             temp_index = 0;
         } else if (index == strlen(fcitx_key)) {
             char* f_key = NULL;
-            RimeToFcitxKeyMap(temp, &f_key);
+            FcitxToRimeKeyMap(temp, &f_key);
             strcat(rime_key, f_key);
         } else {
             temp[temp_index] = fcitx_key[index];
@@ -173,6 +175,7 @@ extern "C" {
   }
   
   static void FcitxToRimeKeyMap(char* fcitx_key, char** rime_key) {
+    printf("Changing %s\n", fcitx_key);
     if(strcmp(fcitx_key, "Ctrl") == 0) {
         *rime_key = "Control";
     } else if(strcmp(fcitx_key, "`") == 0) {

@@ -30,13 +30,13 @@ link_directories(
 qt4_wrap_cpp(FRCU_MOCS ${FRCU_HDRS})
 qt4_wrap_ui(FRCU_SRCS ConfigMain.ui)
 
-add_library(fcitx-rime-config-gui-tool
+add_library(fcitx-rime-config-gui
   MODULE ${FRCU_SRCS} ${FRCU_MOCS})
 
-set_target_properties(fcitx-rime-config-gui-tool PROPERTIES
+set_target_properties(fcitx-rime-config-gui PROPERTIES
   LINK_FLAGS "-Wl,--no-undefined")
 
-target_link_libraries(fcitx-rime-config-gui-tool
+target_link_libraries(fcitx-rime-config-gui
   debug ${QT_QTCORE_LIBRARY_DEBUG}
   debug ${QT_QTDBUS_LIBRARY_DEBUG}
   debug ${QT_QTGUI_LIBRARY_DEBUG}
@@ -49,4 +49,4 @@ target_link_libraries(fcitx-rime-config-gui-tool
   ${RIME_LIBRARIES}
   )
 
-install(TARGETS fcitx-rime-config-gui-tool DESTINATION ${FCITX4_ADDON_INSTALL_DIR}/qt)
+install(TARGETS fcitx-rime-config-gui DESTINATION ${FCITX4_ADDON_INSTALL_DIR}/qt)

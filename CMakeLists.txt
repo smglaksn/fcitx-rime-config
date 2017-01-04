@@ -13,12 +13,4 @@ find_package(Rime REQUIRED)
 pkg_check_modules(FCITX_QT "fcitx-qt>=4.2.8")
 pkg_check_modules(RIME "rime>=1.0.0" REQUIRED)
 
-# Macros
-# if(NOT DEFINED RIME_DATA_DIR)
-#   find_package(Brise REQUIRED)
-#   set(RIME_DATA_DIR ${BRISE_DIR})
-# endif(NOT DEFINED RIME_DATA_DIR)
-# add_definitions(-DRIME_DATA_DIR="${RIME_DATA_DIR}")
-# message(STATUS "Precompiler macro RIME_DATA_DIR is set to \"${RIME_DATA_DIR}\"") 
-
 add_subdirectory(src)

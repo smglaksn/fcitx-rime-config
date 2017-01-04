@@ -7,7 +7,16 @@ This is a GUI config tool for fcitx-rime.
 - Toggle key
 - Number of word candidates
 
-## Planned
+## Planned config options
+
+- Customize schemas
+- Default schema
+
+
+
+## TODOs
+
+- Migrate to Qt5
 
 
 ## BuildRequires
