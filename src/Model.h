@@ -4,16 +4,24 @@
 #include <fcitx-config/fcitx-config.h>
 #include <rime_api.h>
 
+#include "fcitx-utils/keysym.h"
+#include <qkeysequence.h>
+
 namespace fcitx_rime {
+  class FcitxKeySeq {
+  public:
+    FcitxKeyState state;
+    int sym;
+    FcitxKeySeq();
+    FcitxKeySeq(const char* keyseq);
+    FcitxKeySeq(const QKeySequence qkey);
+    char* toString();
+  };
   class FcitxRimeConfigDataModel : public QObject {
     Q_OBJECT
     public:
-    FcitxRimeConfigDataModel() {
-        memset(toggle_key0, 0, sizeof(toggle_key0));
-        memset(toggle_key1, 0, sizeof(toggle_key1));
-    }
-    char toggle_key0[30];
-    char toggle_key1[30];
+    FcitxKeySeq toggle_key0;
+    FcitxKeySeq toggle_key1;
     int candidate_per_word;
     private:
     

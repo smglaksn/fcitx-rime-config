@@ -22,15 +22,9 @@ extern "C" {
   void FcitxRimeConfigStart(FcitxRime* rime);
   RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
   void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size);
+  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1);
   void FcitxRimeConfigSync(FcitxRime* rime);
   void FcitxRimeDestroy(FcitxRime* rime);
-  void FcitxRimeKeySeqToFcitxKeySeq(char* rime_key, char* fcitx_key);
-  void FcitxKeySeqToRimeKeySeq(char* fcitx_key, char* rime_key);
-  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1);
-  
-  // private util functions
-  static void FcitxToRimeKeyMap(char* fcitx_key, char** rime_key);
-  static void RimeToFcitxKeyMap(char* rime_key, char** fcitx_key);
 
 #ifdef __cplusplus
 }
