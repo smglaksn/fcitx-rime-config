@@ -63,7 +63,7 @@ namespace fcitx_rime {
   void ConfigMain::uiToModel() {
     model->candidate_per_word = m_ui->cand_cnt_spinbox->value();
     model->toggle_key0 = FcitxKeySeq(m_ui->toggle_shortcut->keySequence());
-    model->toggle_key1 = FcitxKeySeq(m_ui->toggle_shortcut->keySequence());
+    model->toggle_key1 = FcitxKeySeq(m_ui->toggle_shortcut_2->keySequence());
   }
   
   void ConfigMain::save() {
