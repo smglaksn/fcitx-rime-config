@@ -54,9 +54,7 @@ extern "C" {
     return fcitx_rime_config_default;
   }
   
-  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1) {
-    assert(key0 != NULL);
-    assert(key1 != NULL);
+  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, const char* key0, const char* key1) {
     size_t s = RimeConfigListSize(config, "switcher/hotkeys");
     RimeConfigIterator* iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
     RimeConfigBeginList(iterator, config, "switcher/hotkeys");
@@ -73,8 +71,6 @@ extern "C" {
         }
     }
     fcitx_utils_free(iterator);
-    fcitx_utils_free(key0);
-    fcitx_utils_free(key1);
   }
   
   void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size) {

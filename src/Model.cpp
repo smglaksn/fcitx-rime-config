@@ -2,6 +2,7 @@
 #include "fcitx-utils/utf8.h"
 #include "fcitx-utils/keydata.h"
 #include "Model.h"
+#include <fcitx-qt/fcitxqtkeysequencewidget.h>
 
 namespace fcitx_rime {
   
@@ -34,17 +35,16 @@ namespace fcitx_rime {
     _CHECK_MODIFIER("Super+", Super)
     
 #undef _CHECK_MODIFIER
-    this->states_ = states;
     this->sym_ = keySymFromString(lastModifier);
+    this->states_ = states;
   }
   
   KeySym FcitxKeySeq::keySymFromString(const char* keyString) {
     auto value = std::lower_bound(
         keyValueByNameOffset, keyValueByNameOffset + FCITX_ARRAY_SIZE(keyValueByNameOffset), keyString,
         [](const uint32_t &idx, const std::string &str) { return keyNameList[&idx - keyValueByNameOffset] < str; });
-
     if (value != keyValueByNameOffset + FCITX_ARRAY_SIZE(keyValueByNameOffset) &&
-        keyString == keyNameList[value - keyValueByNameOffset]) {
+        strcmp(keyString, keyNameList[value - keyValueByNameOffset]) == 0) {
         return static_cast<KeySym>(*value);
     }
 
@@ -91,12 +91,56 @@ namespace fcitx_rime {
     return static_cast<KeySym>(wc | 0x01000000);
   }
   
+  std::string FcitxKeySeq::keySymToString(KeySym sym) {
+    const KeyNameOffsetByValue *result =
+    std::lower_bound(keyNameOffsetByValue, keyNameOffsetByValue + FCITX_ARRAY_SIZE(keyNameOffsetByValue), sym,
+                      [](const KeyNameOffsetByValue &item, KeySym key) { return item.sym < key; });
+    if (result != keyNameOffsetByValue + FCITX_ARRAY_SIZE(keyNameOffsetByValue) && result->sym == sym) {
+      return keyNameList[result->offset];
+    }
+    return std::string();
+  }
+  
   // convert QKeySequence to state and sym
   FcitxKeySeq::FcitxKeySeq(const QKeySequence qkey) {
-    
+    int sym = 0;
+    uint states = 0;
+    int qkeycode = static_cast<int>(qkey);
+    FcitxQtKeySequenceWidget::keyQtToFcitx(qkeycode, FcitxQtModifierSide::MS_Unknown, sym, states);
+    this->sym_ = static_cast<FcitxKeySym>(sym);
+    this->states_ = static_cast<fcitx::KeyState>(states);
   }
+  
   // convert to Rime X11 style string
-  char* FcitxKeySeq::toString() {
-      return NULL;
+  std::string fcitx_rime::FcitxKeySeq::toString() {
+      auto sym = sym_;
+      if (sym == FcitxKey_None) {
+        return std::string();
+      }
+      if (sym == FcitxKey_ISO_Left_Tab) {
+        sym = FcitxKey_Tab;          
+      }
+      
+      auto key = keySymToString(sym);
+
+      if (key.empty()) {
+        return std::string();
+      }
+
+      std::string str;
+      
+      #define _APPEND_MODIFIER_STRING(STR, VALUE)                                                                         \
+        if (states_ & fcitx::KeyState::VALUE) {                                                                                   \
+            str += STR;                                                                                                   \
+      }
+      
+      _APPEND_MODIFIER_STRING("Control+", Ctrl)
+      _APPEND_MODIFIER_STRING("Alt+", Alt)
+      _APPEND_MODIFIER_STRING("Shift+", Shift)
+      _APPEND_MODIFIER_STRING("Super+", Super)
+
+      #undef _APPEND_MODIFIER_STRING
+      str += key;
+      return str;
   }
 }

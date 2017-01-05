@@ -17,9 +17,11 @@ namespace fcitx_rime {
     FcitxKeySeq();
     FcitxKeySeq(const char* keyseq);
     FcitxKeySeq(const QKeySequence qkey);
-    char* toString();
+    std::string toString();
+    std::string keySymToString(KeySym sym);
     KeySym keySymFromString(const char* keyString);
     KeySym keySymFromUnicode(uint32_t wc);
+    
   };
   class FcitxRimeConfigDataModel {
     public:

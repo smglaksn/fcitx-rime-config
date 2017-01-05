@@ -17,7 +17,7 @@ extern "C" {
   void FcitxRimeConfigStart(FcitxRime* rime);
   RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
   void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size);
-  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, char* key0, char* key1);
+  void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, const char* key0, const char* key1);
   void FcitxRimeConfigSync(FcitxRime* rime);
   void FcitxRimeDestroy(FcitxRime* rime);
 

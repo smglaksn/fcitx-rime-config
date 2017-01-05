@@ -82,7 +82,7 @@ namespace fcitx_rime {
   void ConfigMain::modelToYaml() {
     this->rime->api->config_set_int(this->rime->default_conf,
 					       "menu/page_size", this->model->candidate_per_word);
-    FcitxRimeConfigSetToggleKeys(this->rime, this->rime->default_conf, model->toggle_key0.toString(), model->toggle_key1.toString());
+    FcitxRimeConfigSetToggleKeys(this->rime, this->rime->default_conf, model->toggle_key0.toString().c_str(), model->toggle_key1.toString().c_str());
     FcitxRimeConfigSync(this->rime);
     return;
   }
