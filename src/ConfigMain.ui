@@ -35,10 +35,12 @@
 		  </item>
 		  <item>
 		    <widget class="FcitxQtKeySequenceWidget" name="toggle_shortcut">
+          <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
 		    </widget>
 		  </item>
 		  <item>
 		    <widget class="FcitxQtKeySequenceWidget" name="toggle_shortcut_2">
+          <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
 		    </widget>
 		  </item>
 		</layout>

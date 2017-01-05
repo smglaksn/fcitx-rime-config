@@ -11,7 +11,6 @@ FcitxRimeConfigTool::FcitxRimeConfigTool(QObject* parent)
   }
 }
 
-// key: rime-config
 FcitxQtConfigUIWidget* FcitxRimeConfigTool::create(const QString& key)
 {
   Q_UNUSED(key);
