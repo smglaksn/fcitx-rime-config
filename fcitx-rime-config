@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export PATH=$PATH:/usr/lib/fcitx/libexec/
+fcitx-qt-gui-wrapper rime/config
