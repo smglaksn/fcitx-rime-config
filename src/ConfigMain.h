@@ -1,15 +1,15 @@
 #pragma once
-#include <QApplication>
-#include <QFileDialog>
-#include <QMessageBox>
-#include <QDesktopWidget>
-#include <QHBoxLayout>
+// #include <QApplication>
+// #include <QFileDialog>
+// #include <QMessageBox>
+// #include <QDesktopWidget>
+// #include <QHBoxLayout>
 
-#include <fcitx-qt/fcitxqtconfiguiwidget.h>
-#include <fcitx-qt/fcitxqtkeysequencewidget.h>
+#include <fcitxqtconfiguiwidget.h>
+#include <fcitxqtkeysequencewidget.h>
 
 #include "Model.h"
-#include "lib/FcitxRimeConfig.h"
+#include "rime-utils/FcitxRimeConfig.h"
 
 namespace Ui {
   class MainUI;

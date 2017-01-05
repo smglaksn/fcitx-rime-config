@@ -1,6 +1,5 @@
 #include <fcitx-config/xdg.h>
 
-#include <fcitx-qt/fcitxqtkeysequencewidget.h>
 #include <QtConcurrentRun>
 #include <QFutureWatcher>
 #include <QDialogButtonBox>

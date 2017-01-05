@@ -105,7 +105,7 @@ namespace fcitx_rime {
   FcitxKeySeq::FcitxKeySeq(const QKeySequence qkey) {
     int sym = 0;
     uint states = 0;
-    int qkeycode = static_cast<int>(qkey);
+    int qkeycode = static_cast<int>(qkey[0]);
     FcitxQtKeySequenceWidget::keyQtToFcitx(qkeycode, FcitxQtModifierSide::MS_Unknown, sym, states);
     this->sym_ = static_cast<FcitxKeySym>(sym);
     this->states_ = static_cast<fcitx::KeyState>(states);

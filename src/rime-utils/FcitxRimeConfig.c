@@ -34,7 +34,7 @@ extern "C" {
     fcitx_rime_traits.user_data_dir = user_path;
     fcitx_rime_traits.distribution_name = "Rime";
     fcitx_rime_traits.distribution_code_name = "fcitx-rime-config";
-    fcitx_rime_traits.distribution_version = "0.0.1";
+    fcitx_rime_traits.distribution_version = "0.0.2";
     if(rime->firstRun) {
       rime->api->setup(&fcitx_rime_traits);
       rime->firstRun = False;
@@ -79,7 +79,6 @@ extern "C" {
     RimeConfigBeginList(iterator, config, "switcher/hotkeys");
     for(size_t i = 0; i < s; i ++) {
         RimeConfigNext(iterator);
-        // TODO: find out maximum size of key sequence in Rime
         if (i >= keys_size) {
           RimeConfigEnd(iterator);
           break;

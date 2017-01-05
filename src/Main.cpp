@@ -1,6 +1,3 @@
-#include <QApplication>
-#include <QMessageBox>
-
 #include <qplugin.h>
 #include <fcitx-utils/utils.h>
 #include <fcitx-qt/fcitxqtconfiguiplugin.h>
@@ -32,5 +29,3 @@ QStringList FcitxRimeConfigTool::files() {
 QString FcitxRimeConfigTool::domain() {
   return "fcitx_rime";
 }
-
-Q_EXPORT_PLUGIN2(fcitx_rime_config_gui_tool, FcitxRimeConfigTool)
