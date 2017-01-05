@@ -14,4 +14,6 @@ find_package(Rime REQUIRED)
 pkg_check_modules(FCITX_QT "fcitx-qt>=4.2.8")
 pkg_check_modules(RIME "rime>=1.0.0" REQUIRED)
 
+include( ${QT_USE_FILE} )
+
 add_subdirectory(src)
