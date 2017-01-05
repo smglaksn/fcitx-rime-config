@@ -44,7 +44,7 @@
 		</layout>
 	      </item>
 	      <item>
-		<layout class="QHBoxLayout" name="horizontalLayout_toggle">
+		<layout class="QHBoxLayout" name="horizontalLayout_toggle1">
 		  <item>
 		    <widget class="QLabel" name="candidate_word_number_label">
 		      <property name="text"><string>Candidate Word Number</string></property>
@@ -92,7 +92,7 @@
     <customwidget>
       <class>FcitxQtKeySequenceWidget</class>
       <extends>QWidget</extends>
-      <header>fcitx-qt/fcitxqtkeysequencewidget.h</header>
+      <header>fcitxqtkeysequencewidget.h</header>
     </customwidget>
   </customwidgets>
   <resources/>

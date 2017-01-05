@@ -1,6 +1,6 @@
 #include <qplugin.h>
 #include <fcitx-utils/utils.h>
-#include <fcitx-qt/fcitxqtconfiguiplugin.h>
+
 #include "ConfigMain.h"
 #include "Main.h"
 

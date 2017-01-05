@@ -1,9 +1,4 @@
 #pragma once
-// #include <QApplication>
-// #include <QFileDialog>
-// #include <QMessageBox>
-// #include <QDesktopWidget>
-// #include <QHBoxLayout>
 
 #include <fcitxqtconfiguiwidget.h>
 #include <fcitxqtkeysequencewidget.h>

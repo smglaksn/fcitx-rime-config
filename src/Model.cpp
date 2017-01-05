@@ -1,8 +1,8 @@
+#include <fcitxqtkeysequencewidget.h>
 #include "fcitx-utils/keynametable.h"
 #include "fcitx-utils/utf8.h"
 #include "fcitx-utils/keydata.h"
 #include "Model.h"
-#include <fcitx-qt/fcitxqtkeysequencewidget.h>
 
 namespace fcitx_rime {
   
@@ -44,19 +44,19 @@ namespace fcitx_rime {
         keyValueByNameOffset, keyValueByNameOffset + FCITX_ARRAY_SIZE(keyValueByNameOffset), keyString,
         [](const uint32_t &idx, const std::string &str) { return keyNameList[&idx - keyValueByNameOffset] < str; });
     if (value != keyValueByNameOffset + FCITX_ARRAY_SIZE(keyValueByNameOffset) &&
-        strcmp(keyString, keyNameList[value - keyValueByNameOffset]) == 0) {
-        return static_cast<KeySym>(*value);
+      strcmp(keyString, keyNameList[value - keyValueByNameOffset]) == 0) {
+      return static_cast<KeySym>(*value);
     }
 
     if (fcitx::utf8::length(keyString) == 1) {
-        auto chr = fcitx::utf8::getCharValidated(keyString);
-        if (chr > 0) {
-            if (fcitx::utf8::charLength(keyString) == 1) {
-                return static_cast<KeySym>(keyString[0]);
-            } else {
-                return keySymFromUnicode(chr);
-            }
+      auto chr = fcitx::utf8::getCharValidated(keyString);
+      if (chr > 0) {
+        if (fcitx::utf8::charLength(keyString) == 1) {
+          return static_cast<KeySym>(keyString[0]);
+        } else {
+          return keySymFromUnicode(chr);
         }
+      }
     }
 
     return FcitxKey_None;
@@ -73,15 +73,15 @@ namespace fcitx_rime {
 
     /* Binary search in table */
     while (max >= min) {
-        mid = (min + max) / 2;
-        if (gdk_unicode_to_keysym_tab[mid].ucs < wc)
-            min = mid + 1;
-        else if (gdk_unicode_to_keysym_tab[mid].ucs > wc)
-            max = mid - 1;
-        else {
-            /* found it */
-            return static_cast<KeySym>(gdk_unicode_to_keysym_tab[mid].keysym);
-        }
+      mid = (min + max) / 2;
+      if (gdk_unicode_to_keysym_tab[mid].ucs < wc)
+          min = mid + 1;
+      else if (gdk_unicode_to_keysym_tab[mid].ucs > wc)
+          max = mid - 1;
+      else {
+          /* found it */
+          return static_cast<KeySym>(gdk_unicode_to_keysym_tab[mid].keysym);
+      }
     }
 
     /*
@@ -113,34 +113,34 @@ namespace fcitx_rime {
   
   // convert to Rime X11 style string
   std::string fcitx_rime::FcitxKeySeq::toString() {
-      auto sym = sym_;
-      if (sym == FcitxKey_None) {
-        return std::string();
-      }
-      if (sym == FcitxKey_ISO_Left_Tab) {
-        sym = FcitxKey_Tab;          
-      }
-      
-      auto key = keySymToString(sym);
+    auto sym = sym_;
+    if (sym == FcitxKey_None) {
+      return std::string();
+    }
+    if (sym == FcitxKey_ISO_Left_Tab) {
+      sym = FcitxKey_Tab;          
+    }
+    
+    auto key = keySymToString(sym);
 
-      if (key.empty()) {
-        return std::string();
-      }
+    if (key.empty()) {
+      return std::string();
+    }
 
-      std::string str;
-      
-      #define _APPEND_MODIFIER_STRING(STR, VALUE)                                                                         \
-        if (states_ & fcitx::KeyState::VALUE) {                                                                                   \
-            str += STR;                                                                                                   \
-      }
-      
-      _APPEND_MODIFIER_STRING("Control+", Ctrl)
-      _APPEND_MODIFIER_STRING("Alt+", Alt)
-      _APPEND_MODIFIER_STRING("Shift+", Shift)
-      _APPEND_MODIFIER_STRING("Super+", Super)
+    std::string str;
+    
+    #define _APPEND_MODIFIER_STRING(STR, VALUE)                                                                         \
+    if (states_ & fcitx::KeyState::VALUE) {                                                                                   \
+        str += STR;                                                                                                   \
+    }
+    
+    _APPEND_MODIFIER_STRING("Control+", Ctrl)
+    _APPEND_MODIFIER_STRING("Alt+", Alt)
+    _APPEND_MODIFIER_STRING("Shift+", Shift)
+    _APPEND_MODIFIER_STRING("Super+", Super)
 
-      #undef _APPEND_MODIFIER_STRING
-      str += key;
-      return str;
+    #undef _APPEND_MODIFIER_STRING
+    str += key;
+    return str;
   }
 }

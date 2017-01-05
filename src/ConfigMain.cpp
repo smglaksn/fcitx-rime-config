@@ -15,6 +15,7 @@ namespace fcitx_rime {
   ConfigMain::ConfigMain(QWidget* parent) :
     FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI),
     model(new FcitxRimeConfigDataModel()) {
+    printf("running config\n");
     this->setMinimumSize(500, 500);
     m_ui->setupUi(this);
     m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
