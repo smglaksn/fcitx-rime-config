@@ -11,7 +11,6 @@
 #include <QListWidgetItem>
 #include <QStandardItemModel>
 
-
 // TODO: when failed-read happens, disable ui
 // TODO: when failed-save happense, disable ui and show reason
 
@@ -20,9 +19,15 @@ namespace fcitx_rime {
     FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI),
     model(new FcitxRimeConfigDataModel()) {
     this->setMinimumSize(500, 500);
+    // Setup UI
     m_ui->setupUi(this);
     m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
     m_ui->filterTextEdit->setPlaceholderText("Search Input Method");
+     m_ui->addIMButton->setIcon(QIcon::fromTheme("go-next"));
+    m_ui->removeIMButton->setIcon(QIcon::fromTheme("go-previous"));
+    m_ui->moveUpButton->setIcon(QIcon::fromTheme("go-up"));
+    m_ui->moveDownButton->setIcon(QIcon::fromTheme("go-down"));
+    m_ui->configureButton->setIcon(QIcon::fromTheme("help-about"));
     // listViews for currentIM and availIM
     QStandardItemModel* listModel = new QStandardItemModel();
     m_ui->currentIMView->setModel(listModel);
