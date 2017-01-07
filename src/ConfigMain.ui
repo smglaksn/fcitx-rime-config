@@ -181,7 +181,7 @@
 		       <widget class="QLineEdit" name="filterTextEdit"/>
 		     </item>
 		     <item>
-		       <widget class="QTreeView" name="availIMView">
+		       <widget class="QListView" name="availIMView">
 			 <property name="indentation">
 			   <number>0</number>
 			 </property>
@@ -295,7 +295,7 @@
 		       <widget class="QPushButton" name="configureButton"/>
 		     </item>
 		     <item>
-		       <spacer name="verticalSpacer_4">
+      <spacer name="verticalSpacer_4">
 			 <property name="orientation">
 			   <enum>Qt::Vertical</enum>
 			 </property>
@@ -314,19 +314,19 @@
 
 	     <item row="2" column="0" colspan="3">
 	       <widget class="QLabel" name="label_4">
-		 <property name="toolTip">
-		   <string/>
-		 </property>
-		 <property name="text">
-		   <string>&lt;b&gt;Select Input Schema:&lt;/b&gt;</string>
-		 </property>
+           <property name="toolTip">
+            <string/>
+           </property>
+           <property name="text">
+            <string>&lt;b&gt;Select Input Schema:&lt;/b&gt;</string>
+           </property>
 	       </widget>
 	     </item>
 	   </layout> 
 	  </widget><!-- schemas -->
 	</widget> <!-- QTabwidget -->
-      </item>
-    </layout>
+  </item>
+  </layout>
   </widget>
   <customwidgets>
     <customwidget>

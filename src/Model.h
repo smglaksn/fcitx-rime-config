@@ -23,11 +23,21 @@ namespace fcitx_rime {
     KeySym keySymFromUnicode(uint32_t wc);
     
   };
+  
+  class FcitxRimeSchema {
+  public:
+    QString path;
+    QString id;
+    QString name;
+    bool active;
+  };
+  
   class FcitxRimeConfigDataModel {
     public:
     FcitxKeySeq toggle_key0;
     FcitxKeySeq toggle_key1;
     int candidate_per_word;
+    QVector<FcitxRimeSchema> schemas_;
     private:
     
   };

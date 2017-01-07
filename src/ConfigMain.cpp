@@ -3,10 +3,13 @@
 #include <QtConcurrentRun>
 #include <QFutureWatcher>
 #include <QDialogButtonBox>
+#include <QTreeWidgetItem>
 
 #include "ConfigMain.h"
 #include "ui_ConfigMain.h"
 #include "Common.h"
+#include <QListWidgetItem>
+
 
 // TODO: when failed-read happens, disable ui
 // TODO: when failed-save happense, disable ui and show reason
@@ -18,6 +21,9 @@ namespace fcitx_rime {
     this->setMinimumSize(500, 500);
     m_ui->setupUi(this);
     m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
+    m_ui->filterTextEdit->setPlaceholderText("Search Input Method");
+    // listViews for currentIM and availIM
+    // m_ui->currentIMView->setModel();
     connect(m_ui->cand_cnt_spinbox, SIGNAL(valueChanged(int)), 
             this, SLOT(stateChanged()));
     connect(m_ui->toggle_shortcut, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
@@ -76,6 +82,15 @@ namespace fcitx_rime {
     m_ui->cand_cnt_spinbox->setValue(this->model->candidate_per_word);
     m_ui->toggle_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key0.sym_, model->toggle_key0.states_)));
     m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym_, model->toggle_key1.states_)));
+    // set available and enabled input methods
+    for(size_t i = 0; i < model->schemas_.size(); i ++) {
+      auto& schema = mode->schemas_[i];
+      if(schema.active) {
+        QListWidgetItem* active_schema = new QListWidgetItem(m_ui->currentIMView, 0);
+        
+        
+      }
+    }
   }
 
   void ConfigMain::modelToYaml() {
@@ -101,6 +116,31 @@ namespace fcitx_rime {
     setFcitxQtKeySeq(keys[0], model->toggle_key0);
     setFcitxQtKeySeq(keys[1], model->toggle_key1);
     fcitx_utils_free(keys);
+    // load available schemas
+    getAvailableSchemas();
+  }
+  
+  void ConfigMain::getAvailableSchemas() {
+    const char* absolute_path = RimeGetUserDataDir();
+    FcitxStringHashSet* files = FcitxXDGGetFiles(FCITX_RIME_DIR_PREFIX, NULL, FCITX_RIME_SCHEMA_SUFFIX);
+    HASH_SORT(files, fcitx_utils_string_hash_set_compare);
+    HASH_FOREACH(f, files, FcitxStringHashSet) {
+      auto schema = FcitxRimeSchema();
+      schema.path = QString::fromLocal8Bit(f->name).prepend(absolute_path);
+      auto basefilename = QString::fromLocal8Bit(f->name).section(".",0,0);
+      size_t buffer_size = 50;
+      char* name = static_cast<char*>(fcitx_utils_malloc0(buffer_size));
+      char* id = static_cast<char*>(fcitx_utils_malloc0(buffer_size));
+      FcitxRimeGetSchemaAttr(rime, basefilename.toStdString().c_str(), name, buffer_size, "schema/name");
+      FcitxRimeGetSchemaAttr(rime, basefilename.toStdString().c_str(), id, buffer_size, "schema/schema_id");
+      schema.name = QString::fromLocal8Bit(name);
+      schema.id = QString::fromLocal8Bit(id);
+      schema.active = (bool)FcitxRimeCheckSchemaEnabled(rime, rime->default_conf, id);
+      fcitx_utils_free(name);
+      fcitx_utils_free(id);
+      model->schemas_.push_back(schema);
+    }
+    fcitx_utils_free_string_hash_set(files);
   }
   
   void ConfigMain::setFcitxQtKeySeq(char* rime_key, FcitxKeySeq& keyseq) {

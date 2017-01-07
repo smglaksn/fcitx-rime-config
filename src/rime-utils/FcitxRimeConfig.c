@@ -22,12 +22,12 @@ extern "C" {
 
   void FcitxRimeConfigStart(FcitxRime* rime) {
     char* user_path = NULL;
-    FILE* fp = FcitxXDGGetFileUserWithPrefix("rime", ".place_holder", "w", NULL);
+    FILE* fp = FcitxXDGGetFileUserWithPrefix(FCITX_RIME_DIR_PREFIX, ".place_holder", "w", NULL);
     if (fp) {
       fclose(fp);
     }
-    FcitxXDGGetFileUserWithPrefix("rime", "", NULL, &user_path);
-    const char* shared_data_dir = fcitx_utils_get_fcitx_path_with_filename("pkgdatadir", "rime");
+    FcitxXDGGetFileUserWithPrefix(FCITX_RIME_DIR_PREFIX, "", NULL, &user_path);
+    const char* shared_data_dir = fcitx_utils_get_fcitx_path_with_filename("pkgdatadir", FCITX_RIME_DIR_PREFIX);
     RIME_STRUCT(RimeTraits, fcitx_rime_traits);
     fcitx_rime_traits.shared_data_dir = shared_data_dir;
     fcitx_rime_traits.app_name = "rime.fcitx-rime-config";
@@ -46,8 +46,6 @@ extern "C" {
     RimeConfig* fcitx_rime_config_default = fcitx_utils_malloc0(sizeof(RimeConfig));
     Bool suc = rime->api->config_open("default", fcitx_rime_config_default);
     if (!suc) {
-      // TODO: log in fcitx log dir
-      fprintf(stderr, "[fcitx-rime-config] Cannot find default.yaml config file in RIME config dir.\n");
       return NULL;
     }
     rime->default_conf = fcitx_rime_config_default;
@@ -106,6 +104,34 @@ extern "C" {
     FcitxRimeConfigOpenDefault(rime);
   }
   
+  void FcitxRimeGetSchemaAttr(FcitxRime* rime, const char* schema_id, char* name, size_t buffer_size, const char* attr) {
+    RimeConfig* rime_schema_config = fcitx_utils_malloc0(sizeof(RimeConfig));
+    RimeSchemaOpen(schema_id, rime_schema_config);
+    RimeConfigGetString(rime_schema_config, attr, name, buffer_size);
+    RimeConfigClose(rime_schema_config);
+    fcitx_utils_free(rime_schema_config);
+  }
+  
+  int FcitxRimeCheckSchemaEnabled(FcitxRime* rime, RimeConfig* config, const char* schema_id) {
+    size_t s = RimeConfigListSize(config, "schema_list");
+    RimeConfigIterator *iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
+    RimeConfigBeginList(iterator, config, "schema_list");
+    int result = 0;
+    for(size_t i = 0; i < s; i ++) {
+      RimeConfigNext(iterator);
+      RimeConfig* map = fcitx_utils_malloc0(sizeof(RimeConfig));
+      RimeConfigGetItem(config, iterator->path, map);
+      size_t buffer_size = 50;
+      char* s = fcitx_utils_malloc0(buffer_size * sizeof(char));
+      RimeConfigGetString(map, "schema", s, buffer_size);
+      if (strcmp(s, schema_id) == 0) { /* This schema is enabled in default*/
+        result = 1;
+      }
+      fcitx_utils_free(map);
+    }
+    fcitx_utils_free(iterator);
+    return result;
+  }
   
 #ifdef __cplusplus
 }

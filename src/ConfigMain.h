@@ -36,6 +36,7 @@ namespace fcitx_rime {
     void uiToModel();
     void modelToUi();
     void modelToYaml();
+    void getAvailableSchemas();
   };
   
 }
