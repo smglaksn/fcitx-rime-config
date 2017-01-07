@@ -9,6 +9,7 @@
 #include "ui_ConfigMain.h"
 #include "Common.h"
 #include <QListWidgetItem>
+#include <QStandardItemModel>
 
 
 // TODO: when failed-read happens, disable ui
@@ -23,7 +24,10 @@ namespace fcitx_rime {
     m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
     m_ui->filterTextEdit->setPlaceholderText("Search Input Method");
     // listViews for currentIM and availIM
-    // m_ui->currentIMView->setModel();
+    QStandardItemModel* listModel = new QStandardItemModel();
+    m_ui->currentIMView->setModel(listModel);
+    QStandardItemModel* availIMModel = new QStandardItemModel();
+    m_ui->availIMView->setModel(availIMModel);
     connect(m_ui->cand_cnt_spinbox, SIGNAL(valueChanged(int)), 
             this, SLOT(stateChanged()));
     connect(m_ui->toggle_shortcut, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
@@ -84,11 +88,15 @@ namespace fcitx_rime {
     m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym_, model->toggle_key1.states_)));
     // set available and enabled input methods
     for(size_t i = 0; i < model->schemas_.size(); i ++) {
-      auto& schema = mode->schemas_[i];
+      auto& schema = model->schemas_[i];
       if(schema.active) {
-        QListWidgetItem* active_schema = new QListWidgetItem(m_ui->currentIMView, 0);
-        
-        
+        QStandardItem* active_schema = new QStandardItem(schema.name);
+        auto model = static_cast<QStandardItemModel*>(m_ui->currentIMView->model());
+        model->appendRow(active_schema);
+      } else {
+        QStandardItem* inactive_schema = new QStandardItem(schema.name);
+        auto model = static_cast<QStandardItemModel*>(m_ui->availIMView->model());
+        model->appendRow(inactive_schema);
       }
     }
   }

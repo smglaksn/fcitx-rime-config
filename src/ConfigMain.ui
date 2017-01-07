@@ -182,24 +182,6 @@
 		     </item>
 		     <item>
 		       <widget class="QListView" name="availIMView">
-			 <property name="indentation">
-			   <number>0</number>
-			 </property>
-			 <property name="rootIsDecorated">
-			   <bool>false</bool>
-			 </property>
-			 <property name="itemsExpandable">
-			   <bool>false</bool>
-			 </property>
-			 <property name="sortingEnabled">
-			   <bool>true</bool>
-			 </property>
-			 <property name="headerHidden">
-			   <bool>true</bool>
-			 </property>
-			 <attribute name="headerVisible">
-			   <bool>false</bool>
-			 </attribute>
 		       </widget>
 		     </item>
 		   </layout>
