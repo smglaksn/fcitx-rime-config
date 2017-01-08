@@ -2,7 +2,7 @@
 
 This is a GUI config tool for fcitx-rime.
 
-![Screenshot](screenshot/screenshot.png "Config Tab of Schemas")
+![Screenshot](screenshot/screenshot.png "Config Tab of Schemas" =250x)
 
 ## Supported Config Options
 
