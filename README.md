@@ -2,6 +2,8 @@
 
 This is a GUI config tool for fcitx-rime.
 
+![Screenshot](https://raw.github.com/xuzhao9/fcitx-rime-config/screenshot/screenshot.png)
+
 ## Supported Config Options
 
 - Toggle key
