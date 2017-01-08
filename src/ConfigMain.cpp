@@ -18,8 +18,8 @@ namespace fcitx_rime {
   ConfigMain::ConfigMain(QWidget* parent) :
     FcitxQtConfigUIWidget(parent), m_ui(new Ui::MainUI),
     model(new FcitxRimeConfigDataModel()) {
-    this->setMinimumSize(500, 500);
     // Setup UI
+    this->setMinimumSize(500, 500);
     m_ui->setupUi(this);
     m_ui->verticallayout_general->setAlignment(Qt::AlignTop);
     m_ui->filterTextEdit->setPlaceholderText("Search Input Method");
