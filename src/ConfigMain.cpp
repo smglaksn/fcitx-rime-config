@@ -161,6 +161,7 @@ namespace fcitx_rime {
     model->candidate_per_word = m_ui->cand_cnt_spinbox->value();
     model->toggle_key0 = FcitxKeySeq(m_ui->toggle_shortcut->keySequence());
     model->toggle_key1 = FcitxKeySeq(m_ui->toggle_shortcut_2->keySequence());
+    // active schemas already in model so we don't need to save it to model
   }
   
   void ConfigMain::save() {
@@ -210,6 +211,7 @@ namespace fcitx_rime {
     this->rime->api->config_set_int(this->rime->default_conf,
 					       "menu/page_size", this->model->candidate_per_word);
     FcitxRimeConfigSetToggleKeys(this->rime, this->rime->default_conf, model->toggle_key0.toString().c_str(), model->toggle_key1.toString().c_str());
+    // save active schemas to custom yaml
     FcitxRimeConfigSync(this->rime);
     return;
   }
