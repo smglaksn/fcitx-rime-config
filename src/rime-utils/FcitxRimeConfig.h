@@ -17,7 +17,7 @@ extern "C" {
     Bool firstRun;
   } FcitxRime;
   
-  // open, start and close
+  // open and start, sync and close
   FcitxRime* FcitxRimeConfigCreate();
   void FcitxRimeConfigStart(FcitxRime* rime);
   RimeConfig* FcitxRimeConfigOpenDefault(FcitxRime* rime);
@@ -26,6 +26,9 @@ extern "C" {
   // toggle
   void FcitxRimeConfigGetToggleKeys(FcitxRime* rime, RimeConfig* config, char** keys, size_t keys_size);
   void FcitxRimeConfigSetToggleKeys(FcitxRime* rime, RimeConfig* config, const char* key0, const char* key1);
+  // other bindings
+  void FcitXRimeConfigGetKeyBinding(RimeConfig* config, const char* key, char* value);
+  void FcitXRimeConfigSetKeyBinding(RimeConfig* config, const char* key, const char* value);
   // schemas
   void FcitxRimeGetSchemaAttr(FcitxRime* rime, const char* schema_id, char* name, size_t buffer_size, const char* attr);
   int FcitxRimeCheckSchemaEnabled(FcitxRime* rime, RimeConfig* config, const char* schema_id);

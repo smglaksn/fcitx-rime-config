@@ -33,12 +33,17 @@ namespace fcitx_rime {
     m_ui->currentIMView->setModel(listModel);
     QStandardItemModel* availIMModel = new QStandardItemModel();
     m_ui->availIMView->setModel(availIMModel);
+    // connections
     connect(m_ui->cand_cnt_spinbox, SIGNAL(valueChanged(int)), 
             this, SLOT(stateChanged()));
     connect(m_ui->toggle_shortcut, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
             this, SLOT(keytoggleChanged()));
     connect(m_ui->toggle_shortcut_2, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
             this, SLOT(keytoggleChanged()));
+    connect(m_ui->removeIMButton, SIGNAL(clicked(bool)), this, SLOT(removeIM()));
+    connect(m_ui->addIMButton, SIGNAL(clicked(bool)), this, SLOT(addIM()));
+    connect(m_ui->availIMView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(availIMSelectionChanged()));
+    connect(m_ui->currentIMView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(activeIMSelectionChanged()));
     this->rime = FcitxRimeConfigCreate();
     FcitxRimeConfigStart(this->rime);
     this->yamlToModel();
@@ -55,9 +60,87 @@ namespace fcitx_rime {
     stateChanged();
   }
   
+  // SLOTs
   void ConfigMain::stateChanged() {
     emit changed(true);
   }
+  
+  void ConfigMain::addIM() {
+    if(m_ui->availIMView->currentIndex().isValid()) {
+      const QString uniqueName =m_ui->availIMView->currentIndex().data(Qt::DisplayRole).toString();
+      for(size_t i = 0; i < this->model->schemas_.size(); i ++) {
+        if(this->model->schemas_[i].name == uniqueName) {
+          this->model->schemas_[i].active = true;
+          this->model->schemas_[i].index = this->model->schemas_.last().index + 1;
+        }
+      }
+      qSort(this->model->schemas_.begin(), this->model->schemas_.end(), [](const FcitxRimeSchema& s1, const FcitxRimeSchema& s2) {
+       if(s1.index == s2.index) {
+          return s1.id < s2.id;
+        } else {
+          return s1.index < s2.index;}});
+      this->updateIMList();
+      this->stateChanged();
+    }
+  }
+  
+  void ConfigMain::removeIM() {
+    if(m_ui->currentIMView->currentIndex().isValid()) {
+      const QString uniqueName =m_ui->currentIMView->currentIndex().data(Qt::DisplayRole).toString();
+      for(size_t i = 0; i < this->model->schemas_.size(); i ++) {
+        if(this->model->schemas_[i].name == uniqueName) {
+          this->model->schemas_[i].active = false;
+          this->model->schemas_[i].index = 0;
+        }
+      }
+      qSort(this->model->schemas_.begin(), this->model->schemas_.end(), [](const FcitxRimeSchema& s1, const FcitxRimeSchema& s2) {
+        if(s1.index == s2.index) {
+          return s1.id < s2.id;
+        } else {
+          return s1.index < s2.index;}});
+      this->updateIMList();
+      this->stateChanged();
+    }
+  }
+  
+  void ConfigMain::moveUpIM() {}
+  
+  void ConfigMain::moveDownIM() {}
+  
+  void ConfigMain::aboutIM() {}
+  
+  void ConfigMain::availIMSelectionChanged() {
+    if(!m_ui->availIMView->currentIndex().isValid()) {
+      m_ui->addIMButton->setEnabled(false);
+    } else {
+      m_ui->addIMButton->setEnabled(true);
+    }
+  }
+  
+  void ConfigMain::activeIMSelectionChanged() {
+    if(!m_ui->currentIMView->currentIndex().isValid()) {
+      m_ui->removeIMButton->setEnabled(false);
+      m_ui->moveUpButton->setEnabled(false);
+      m_ui->moveDownButton->setEnabled(false);
+      m_ui->configureButton->setEnabled(false);
+    } else {
+      m_ui->removeIMButton->setEnabled(true);
+      m_ui->configureButton->setEnabled(true);
+      if(m_ui->currentIMView->currentIndex().row() == 0) {
+        m_ui->moveUpButton->setEnabled(false);
+      } else {
+        m_ui->moveUpButton->setEnabled(true);
+      }
+      if(m_ui->currentIMView->currentIndex().row() == 
+        m_ui->currentIMView->model()->rowCount() - 1)
+      {
+        m_ui->moveDownButton->setEnabled(false);
+      } else {
+        m_ui->moveDownButton->setEnabled(true);
+      }
+    }
+  }
+  // end of SLOTs
   
   QString ConfigMain::icon() {
     return "fcitx-rime";
@@ -106,6 +189,23 @@ namespace fcitx_rime {
     }
   }
 
+  void ConfigMain::updateIMList() {
+    auto avail_IMmodel = static_cast<QStandardItemModel*>(m_ui->availIMView->model());
+    auto active_IMmodel = static_cast<QStandardItemModel*>(m_ui->currentIMView->model());
+    avail_IMmodel->removeRows(0, avail_IMmodel->rowCount());
+    active_IMmodel->removeRows(0, active_IMmodel->rowCount());
+    for(size_t i = 0; i < model->schemas_.size(); i ++) {
+      auto& schema = model->schemas_[i];
+      if(schema.active) {
+        QStandardItem* active_schema = new QStandardItem(schema.name);
+        active_IMmodel->appendRow(active_schema);
+      } else {
+        QStandardItem* inactive_schema = new QStandardItem(schema.name);
+        avail_IMmodel->appendRow(inactive_schema);
+      }
+    }
+  }
+  
   void ConfigMain::modelToYaml() {
     this->rime->api->config_set_int(this->rime->default_conf,
 					       "menu/page_size", this->model->candidate_per_word);
@@ -148,12 +248,18 @@ namespace fcitx_rime {
       FcitxRimeGetSchemaAttr(rime, basefilename.toStdString().c_str(), id, buffer_size, "schema/schema_id");
       schema.name = QString::fromLocal8Bit(name);
       schema.id = QString::fromLocal8Bit(id);
-      schema.active = (bool)FcitxRimeCheckSchemaEnabled(rime, rime->default_conf, id);
+      schema.index = FcitxRimeCheckSchemaEnabled(rime, rime->default_conf, id);
+      schema.active = (bool)schema.index;
       fcitx_utils_free(name);
       fcitx_utils_free(id);
       model->schemas_.push_back(schema);
     }
     fcitx_utils_free_string_hash_set(files);
+    qSort(model->schemas_.begin(), model->schemas_.end(), [](const FcitxRimeSchema& s1, const FcitxRimeSchema& s2) {
+      if(s1.index == s2.index) {
+          return s1.id < s2.id;
+        } else {
+          return s1.index < s2.index;}});
   }
   
   void ConfigMain::setFcitxQtKeySeq(char* rime_key, FcitxKeySeq& keyseq) {

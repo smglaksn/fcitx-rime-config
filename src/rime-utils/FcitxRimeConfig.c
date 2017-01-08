@@ -124,8 +124,8 @@ extern "C" {
       size_t buffer_size = 50;
       char* s = fcitx_utils_malloc0(buffer_size * sizeof(char));
       RimeConfigGetString(map, "schema", s, buffer_size);
-      if (strcmp(s, schema_id) == 0) { /* This schema is enabled in default*/
-        result = 1;
+      if (strcmp(s, schema_id) == 0) { /* This schema is enabled in default*/        
+        result = (i+1);
       }
       fcitx_utils_free(map);
     }

@@ -20,8 +20,7 @@ namespace fcitx_rime {
     std::string toString();
     std::string keySymToString(KeySym sym);
     KeySym keySymFromString(const char* keyString);
-    KeySym keySymFromUnicode(uint32_t wc);
-    
+    KeySym keySymFromUnicode(uint32_t wc);    
   };
   
   class FcitxRimeSchema {
@@ -29,13 +28,19 @@ namespace fcitx_rime {
     QString path;
     QString id;
     QString name;
+    int index; // index starts from 1, 0 means not enabled
     bool active;
-  };
+  };  
   
   class FcitxRimeConfigDataModel {
     public:
     FcitxKeySeq toggle_key0;
     FcitxKeySeq toggle_key1;
+    FcitxKeySeq ascii_key;
+    FcitxKeySeq trasim_key;
+    FcitxKeySeq halffull_key;
+    FcitxKeySeq pgup_key;
+    FcitxKeySeq pgdown_key;
     int candidate_per_word;
     QVector<FcitxRimeSchema> schemas_;
     private:

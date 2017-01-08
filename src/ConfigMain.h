@@ -26,6 +26,13 @@ namespace fcitx_rime {
   public slots:
     void keytoggleChanged();
     void stateChanged();
+    void addIM();
+    void removeIM();
+    void moveUpIM();
+    void moveDownIM();
+    void aboutIM();
+    void availIMSelectionChanged();
+    void activeIMSelectionChanged();
   private:
     Ui::MainUI* m_ui;
     FcitxRime* rime;
@@ -37,6 +44,7 @@ namespace fcitx_rime {
     void modelToUi();
     void modelToYaml();
     void getAvailableSchemas();
+    void updateIMList();
   };
   
 }
