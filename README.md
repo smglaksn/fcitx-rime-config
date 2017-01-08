@@ -2,7 +2,7 @@
 
 This is a GUI config tool for fcitx-rime.
 
-<img src="https://raw.githubusercontent.com/xuzhao9/fcitx-rime-config/master/screenshot/screenshot.png" width="250">
+<img src="https://raw.githubusercontent.com/xuzhao9/fcitx-rime-config/master/screenshot/screenshot.png" width="350">
 
 ## Supported Config Options
 
