@@ -88,6 +88,29 @@ extern "C" {
     }
     fcitx_utils_free(iterator);
   }
+  
+  // Get key bindings 
+  void FcitXRimeConfigGetKeyBinding(RimeConfig* config, const char* key, char* value) {
+    size_t s = RimeConfigListSize(config, "keybinder/bindings");
+    RimeConfigIterator *iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
+    RimeConfigBeginList(iterator, config, "keybinder/bindings");
+    for(size_t i = 0; i < s; i ++) {
+      RimeConfig* map = fcitx_utils_malloc0(sizeof(RimeConfig));
+      size_t buffer_size = 50;
+      RimeConfigGetItem(config, iterator->path, map);
+      char* accept = fcitx_utils_malloc0(buffer_size * sizeof(char));
+      RimeConfigGetString(config, "accept", accept, buffer_size);
+      char* send = fcitx_utils_malloc0(buffer_size * sizeof(char));
+      RimeConfigGetString(config, "send", send, buffer_size);
+      if(strcmp(send, key) == 0) {
+        strcpy(accept, value);
+      }
+      fcitx_utils_free(accept);
+      fcitx_utils_free(send);
+      fcitx_utils_free(map);
+    }
+    fcitx_utils_free(iterator);
+  }
 
   void FcitxRimeDestroy(FcitxRime* rime) {
     RimeConfigClose(rime->default_conf);

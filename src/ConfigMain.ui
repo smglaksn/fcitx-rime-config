@@ -71,7 +71,7 @@
 		    </widget>
 		  </item>
 		  <item>
-		    <widget class="FcitxQtKeySequenceWidget" name="trasim_shortcut">
+		    <widget class="FcitxQtKeySequenceWidget" name="transim_shortcut">
 		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
 		    </widget>
 		  </item>

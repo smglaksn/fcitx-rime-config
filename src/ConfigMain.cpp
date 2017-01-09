@@ -175,6 +175,7 @@ namespace fcitx_rime {
     m_ui->cand_cnt_spinbox->setValue(this->model->candidate_per_word);
     m_ui->toggle_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key0.sym_, model->toggle_key0.states_)));
     m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym_, model->toggle_key1.states_)));
+    m_ui->transim_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->trasim_key.sym_, model->trasim_key.states_)));
     // set available and enabled input methods
     for(size_t i = 0; i < model->schemas_.size(); i ++) {
       auto& schema = model->schemas_[i];
@@ -231,6 +232,12 @@ namespace fcitx_rime {
     setFcitxQtKeySeq(keys[0], model->toggle_key0);
     setFcitxQtKeySeq(keys[1], model->toggle_key1);
     fcitx_utils_free(keys);
+    // load other shortcuts
+    size_t buffer_size = 50;
+    char* transim = (char*)fcitx_utils_malloc0(buffer_size);
+    FcitXRimeConfigGetKeyBinding(rime->default_conf, "simplification", transim);
+    setFcitxQtKeySeq(transim, model->trasim_key);
+    fcitx_utils_free(transim);
     // load available schemas
     getAvailableSchemas();
   }
