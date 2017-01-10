@@ -40,6 +40,20 @@ namespace fcitx_rime {
             this, SLOT(keytoggleChanged()));
     connect(m_ui->toggle_shortcut_2, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
             this, SLOT(keytoggleChanged()));
+    connect(m_ui->hotkey_pageup, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->hotkey_pageup_2, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->hotkey_pagedown, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->hotkey_pagedown_2, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->shortcut_ascii, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->transim_shortcut, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
+    connect(m_ui->hotkey_hfshape, SIGNAL(keySequenceChanged(QKeySequence, FcitxQtModifierSide)), 
+            this, SLOT(keytoggleChanged()));
     connect(m_ui->removeIMButton, SIGNAL(clicked(bool)), this, SLOT(removeIM()));
     connect(m_ui->addIMButton, SIGNAL(clicked(bool)), this, SLOT(addIM()));
     connect(m_ui->availIMView->selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(availIMSelectionChanged()));
@@ -179,7 +193,13 @@ namespace fcitx_rime {
     m_ui->transim_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->trasim_key[0].sym_, model->trasim_key[0].states_)));
     m_ui->hotkey_hfshape->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->halffull_key[0].sym_, model->halffull_key[0].states_)));
     m_ui->hotkey_pagedown->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgdown_key[0].sym_, model->pgdown_key[0].states_)));
+    if(model->pgdown_key.size() > 1) {
+      m_ui->hotkey_pagedown_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgdown_key[1].sym_, model->pgdown_key[1].states_)));
+    }
     m_ui->hotkey_pageup->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgup_key[0].sym_, model->pgup_key[0].states_)));
+    if(model->pgup_key.size() > 1) {
+      m_ui->hotkey_pageup_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgup_key[1].sym_, model->pgup_key[1].states_)));
+    }
     // set available and enabled input methods
     for(size_t i = 0; i < model->schemas_.size(); i ++) {
       auto& schema = model->schemas_[i];

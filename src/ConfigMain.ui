@@ -47,6 +47,46 @@
 		</layout>
 	      </item>
 
+        	      <item>
+		<layout class="QHBoxLayout" name="horizontalLayout_pageup">
+		  <item>
+		    <widget class="QLabel" name="label_pageup">
+		      <property name="text"><string>Page Up</string></property>
+		    </widget>
+		  </item>
+		  <item>
+		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pageup">
+		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
+		    </widget>
+		  </item>
+      <item>
+		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pageup_2">
+		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
+		    </widget>
+		  </item>
+		</layout>
+	      </item>
+
+	      <item>
+		<layout class="QHBoxLayout" name="horizontalLayout_pagedown">
+		  <item>
+		    <widget class="QLabel" name="label_pagedown">
+		      <property name="text"><string>Page Down</string></property>
+		    </widget>
+		  </item>
+		  <item>
+		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pagedown">
+		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
+		    </widget>
+		  </item>
+      <item>
+		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pagedown_2">
+		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
+		    </widget>
+		  </item>
+		</layout>
+    </item>
+        
 	      
 	      <item>
 		<layout class="QHBoxLayout" name="horizontalLayout_ascii">
@@ -93,35 +133,7 @@
 		</layout>
 	      </item>
 
-	      <item>
-		<layout class="QHBoxLayout" name="horizontalLayout_pageup">
-		  <item>
-		    <widget class="QLabel" name="label_pageup">
-		      <property name="text"><string>Page Up</string></property>
-		    </widget>
-		  </item>
-		  <item>
-		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pageup">
-		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
-		    </widget>
-		  </item>
-		</layout>
-	      </item>
 
-	      <item>
-		<layout class="QHBoxLayout" name="horizontalLayout_pagedown">
-		  <item>
-		    <widget class="QLabel" name="label_pagedown">
-		      <property name="text"><string>Page Down</string></property>
-		    </widget>
-		  </item>
-		  <item>
-		    <widget class="FcitxQtKeySequenceWidget" name="hotkey_pagedown">
-		      <property name="multiKeyShortcutsAllowed"><bool>false</bool></property>
-		    </widget>
-		  </item>
-		</layout>
-	      </item>
 
 
 		
