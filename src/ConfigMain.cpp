@@ -175,7 +175,11 @@ namespace fcitx_rime {
     m_ui->cand_cnt_spinbox->setValue(this->model->candidate_per_word);
     m_ui->toggle_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key0.sym_, model->toggle_key0.states_)));
     m_ui->toggle_shortcut_2->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->toggle_key1.sym_, model->toggle_key1.states_)));
-    m_ui->transim_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->trasim_key.sym_, model->trasim_key.states_)));
+    m_ui->shortcut_ascii->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->ascii_key[0].sym_, model->ascii_key[0].states_)));
+    m_ui->transim_shortcut->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->trasim_key[0].sym_, model->trasim_key[0].states_)));
+    m_ui->hotkey_hfshape->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->halffull_key[0].sym_, model->halffull_key[0].states_)));
+    m_ui->hotkey_pagedown->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgdown_key[0].sym_, model->pgdown_key[0].states_)));
+    m_ui->hotkey_pageup->setKeySequence(QKeySequence(FcitxQtKeySequenceWidget::keyFcitxToQt(model->pgup_key[0].sym_, model->pgup_key[0].states_)));
     // set available and enabled input methods
     for(size_t i = 0; i < model->schemas_.size(); i ++) {
       auto& schema = model->schemas_[i];
@@ -233,11 +237,50 @@ namespace fcitx_rime {
     setFcitxQtKeySeq(keys[1], model->toggle_key1);
     fcitx_utils_free(keys);
     // load other shortcuts
+    FcitxRimeBeginKeyBinding(rime->default_conf);
     size_t buffer_size = 50;
-    char* transim = (char*)fcitx_utils_malloc0(buffer_size);
-    FcitXRimeConfigGetKeyBinding(rime->default_conf, "simplification", transim);
-    setFcitxQtKeySeq(transim, model->trasim_key);
-    fcitx_utils_free(transim);
+    char* accept = (char*)fcitx_utils_malloc0(buffer_size);
+    char* act_key = (char*)fcitx_utils_malloc0(buffer_size);
+    char* act_type = (char*)fcitx_utils_malloc0(buffer_size);
+    FcitxRimeBeginKeyBinding(rime->default_conf);
+    size_t toggle_length = FcitxRimeConfigGetKeyBindingSize(rime->default_conf);
+    for(size_t i = 0; i < toggle_length; i ++) {
+      memset(accept, 0, buffer_size);
+      memset(act_key, 0, buffer_size);
+      memset(act_type, 0, buffer_size);
+      FcitXRimeConfigGetNextKeyBinding(rime->default_conf, act_type, act_key, accept, buffer_size);
+      if(strcmp(act_key, "ascii_mode") == 0) {
+        FcitxKeySeq seq = FcitxKeySeq(accept);
+        seq.acttype_ = QString::fromLocal8Bit(act_type);
+        seq.actkey_ = QString::fromLocal8Bit(act_key);
+        model->ascii_key.push_back(seq);
+      } else if (strcmp(act_key, "full_shape") == 0) {
+        FcitxKeySeq seq = FcitxKeySeq(accept);
+        seq.acttype_ = QString::fromLocal8Bit(act_type);
+        seq.actkey_ = QString::fromLocal8Bit(act_key);
+        model->halffull_key.push_back(seq);
+      } else if (strcmp(act_key, "simplification") == 0) {
+        FcitxKeySeq seq = FcitxKeySeq(accept);
+        seq.acttype_ = QString::fromLocal8Bit(act_type);
+        seq.actkey_ = QString::fromLocal8Bit(act_key);
+        model->trasim_key.push_back(seq);
+      } else if (strcmp(act_key, "Page_Up") == 0) {
+        FcitxKeySeq seq = FcitxKeySeq(accept);
+        seq.acttype_ = QString::fromLocal8Bit(act_type);
+        seq.actkey_ = QString::fromLocal8Bit(act_key);
+        model->pgup_key.push_back(seq);
+      } else if (strcmp(act_key, "Page_Down") == 0) {
+        FcitxKeySeq seq = FcitxKeySeq(accept);
+        seq.acttype_ = QString::fromLocal8Bit(act_type);
+        seq.actkey_ = QString::fromLocal8Bit(act_key);
+        model->pgdown_key.push_back(seq);
+      }
+    }
+    fcitx_utils_free(accept);
+    fcitx_utils_free(act_key);
+    fcitx_utils_free(act_type);
+    FcitxRimeEndKeyBinding(rime->default_conf);
+    
     // load available schemas
     getAvailableSchemas();
   }

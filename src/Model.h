@@ -14,6 +14,8 @@ namespace fcitx_rime {
   public:
     KeyStates states_;
     KeySym sym_;
+    QString acttype_;
+    QString actkey_;
     FcitxKeySeq();
     FcitxKeySeq(const char* keyseq);
     FcitxKeySeq(const QKeySequence qkey);
@@ -36,11 +38,11 @@ namespace fcitx_rime {
     public:
     FcitxKeySeq toggle_key0;
     FcitxKeySeq toggle_key1;
-    FcitxKeySeq ascii_key;
-    FcitxKeySeq trasim_key;
-    FcitxKeySeq halffull_key;
-    FcitxKeySeq pgup_key;
-    FcitxKeySeq pgdown_key;
+    QVector<FcitxKeySeq> ascii_key;
+    QVector<FcitxKeySeq> trasim_key;
+    QVector<FcitxKeySeq> halffull_key;
+    QVector<FcitxKeySeq> pgup_key;
+    QVector<FcitxKeySeq> pgdown_key;
     int candidate_per_word;
     QVector<FcitxRimeSchema> schemas_;
     private:

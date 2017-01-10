@@ -89,27 +89,55 @@ extern "C" {
     fcitx_utils_free(iterator);
   }
   
+  
+  
   // Get key bindings 
-  void FcitXRimeConfigGetKeyBinding(RimeConfig* config, const char* key, char* value) {
-    size_t s = RimeConfigListSize(config, "keybinder/bindings");
-    RimeConfigIterator *iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
-    RimeConfigBeginList(iterator, config, "keybinder/bindings");
-    for(size_t i = 0; i < s; i ++) {
-      RimeConfig* map = fcitx_utils_malloc0(sizeof(RimeConfig));
-      size_t buffer_size = 50;
-      RimeConfigGetItem(config, iterator->path, map);
-      char* accept = fcitx_utils_malloc0(buffer_size * sizeof(char));
-      RimeConfigGetString(config, "accept", accept, buffer_size);
-      char* send = fcitx_utils_malloc0(buffer_size * sizeof(char));
-      RimeConfigGetString(config, "send", send, buffer_size);
-      if(strcmp(send, key) == 0) {
-        strcpy(accept, value);
-      }
-      fcitx_utils_free(accept);
-      fcitx_utils_free(send);
-      fcitx_utils_free(map);
+  static RimeConfigIterator* global_iterator;
+  void FcitxRimeBeginKeyBinding(RimeConfig* config) {
+    global_iterator = fcitx_utils_malloc0(sizeof(RimeConfigIterator));  
+    RimeConfigBeginList(global_iterator, config, "key_binder/bindings");
+  }
+  
+  size_t FcitxRimeConfigGetKeyBindingSize(RimeConfig *config) {
+    return RimeConfigListSize(config, "key_binder/bindings");
+  }
+  
+  void FcitxRimeEndKeyBinding(RimeConfig* config) {
+    fcitx_utils_free(global_iterator);
+  }
+  
+  void FcitXRimeConfigGetNextKeyBinding(RimeConfig* config, char* act_type, char* act_key, char* accept, size_t buffer_size) {
+    RimeConfigNext(global_iterator);
+    RimeConfig* map = fcitx_utils_malloc0(sizeof(RimeConfig));
+    RimeConfigGetItem(config, global_iterator->path, map);
+    
+    char* accept_try = fcitx_utils_malloc0(buffer_size * sizeof(char));
+    memset(accept_try, 0 , buffer_size * sizeof(char));
+    RimeConfigGetString(map, "accept", accept_try, buffer_size);
+    
+    char* send_try = fcitx_utils_malloc0(buffer_size * sizeof(char));
+    memset(send_try, 0 , buffer_size * sizeof(char));
+    RimeConfigGetString(map, "send", send_try, buffer_size);
+    
+    char* toggle_try = fcitx_utils_malloc0(buffer_size * sizeof(char));
+    memset(toggle_try, 0 , buffer_size * sizeof(char));
+    RimeConfigGetString(map, "toggle", toggle_try, buffer_size);
+    
+    if(strlen(send_try) != 0) {
+      strncpy(act_type, "send", buffer_size);
+      strncpy(act_key, send_try, buffer_size);
+    } else if (strlen(toggle_try) != 0) {
+      strncpy(act_type, "toggle", buffer_size);
+      strncpy(act_key, toggle_try, buffer_size);
     }
-    fcitx_utils_free(iterator);
+    
+    strncpy(accept, accept_try, buffer_size);
+    
+    // free things
+    fcitx_utils_free(accept_try);
+    fcitx_utils_free(send_try);
+    fcitx_utils_free(toggle_try);
+    fcitx_utils_free(map);
   }
 
   void FcitxRimeDestroy(FcitxRime* rime) {
