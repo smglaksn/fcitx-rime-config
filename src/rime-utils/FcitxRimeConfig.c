@@ -140,6 +140,30 @@ extern "C" {
     fcitx_utils_free(map);
   }
 
+  void FcitXRimeConfigSetKeyBinding(RimeConfig* config, const char* act_type, const char* act_key, const char* value, size_t index) {
+    RimeConfigIterator* iter = fcitx_utils_malloc0(sizeof(RimeConfigIterator));
+    size_t sz = RimeConfigListSize(config, "key_binder/bindings");
+    size_t j = 0;
+    RimeConfigBeginList(iter, config, "key_binder/bindings");
+    for(size_t i = 0; i < sz; i ++) {
+      RimeConfigNext(iter);
+      RimeConfig* map = fcitx_utils_malloc0(sizeof(RimeConfig));
+      RimeConfigGetItem(config, iter->path, map);
+      size_t buffer_size = 50;
+      char* act_key_try = fcitx_utils_malloc0(buffer_size * sizeof(char));
+      RimeConfigGetString(map, act_type, act_key_try, buffer_size);
+      if(strcmp(act_key_try, act_key) == 0) {
+        if(j == index) {
+          RimeConfigSetString(map, "accept", value);
+        }
+        j += 1;
+      }
+      fcitx_utils_free(act_key_try);
+      fcitx_utils_free(map);
+    }
+    fcitx_utils_free(iter);
+  }
+  
   void FcitxRimeDestroy(FcitxRime* rime) {
     RimeConfigClose(rime->default_conf);
     rime->api->finalize();

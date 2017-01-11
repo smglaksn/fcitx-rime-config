@@ -173,8 +173,33 @@ namespace fcitx_rime {
   
   void ConfigMain::uiToModel() {
     model->candidate_per_word = m_ui->cand_cnt_spinbox->value();
+    
     model->toggle_key0 = FcitxKeySeq(m_ui->toggle_shortcut->keySequence());
     model->toggle_key1 = FcitxKeySeq(m_ui->toggle_shortcut_2->keySequence());
+    QString pgup_key_acttype = model->pgup_key[0].acttype_;
+    QString pgup_key_actkey = model->pgup_key[0].actkey_;
+    QString pgdwn_key_acttype = model->pgdown_key[0].acttype_;
+    QString pgdwn_key_actkey = model->pgdown_key[0].actkey_;
+    QString ascii_key_acttype = model->ascii_key[0].acttype_;
+    QString ascii_key_actkey = model->ascii_key[0].actkey_;
+    QString trasim_key_acttype = model->trasim_key[0].acttype_;
+    QString trasim_key_actkey = model->trasim_key[0].actkey_;
+    QString halffull_key_acttype = model->halffull_key[0].acttype_;
+    QString halffull_key_actkey = model->halffull_key[0].actkey_;
+    model->pgup_key[0] = FcitxKeySeq(m_ui->hotkey_pageup->keySequence());
+    model->pgup_key[0].actkey_ = pgup_key_actkey; model->pgup_key[0].acttype_ = pgup_key_acttype;
+    model->pgup_key[1] = FcitxKeySeq(m_ui->hotkey_pageup_2->keySequence());
+    model->pgup_key[1].actkey_ = pgup_key_actkey; model->pgup_key[1].acttype_ = pgup_key_acttype;
+    model->pgdown_key[0] = FcitxKeySeq(m_ui->hotkey_pagedown->keySequence());
+    model->pgdown_key[0].actkey_ = pgdwn_key_actkey; model->pgdown_key[0].acttype_ = pgdwn_key_acttype;
+    model->pgdown_key[1] = FcitxKeySeq(m_ui->hotkey_pagedown_2->keySequence());
+    model->pgdown_key[1].actkey_ = pgdwn_key_actkey; model->pgdown_key[1].acttype_ = pgdwn_key_acttype;
+    model->ascii_key[0] = FcitxKeySeq(m_ui->shortcut_ascii->keySequence());
+    model->ascii_key[0].actkey_ = ascii_key_actkey; model->ascii_key[0].acttype_ = ascii_key_acttype;
+    model->trasim_key[0] = FcitxKeySeq(m_ui->transim_shortcut->keySequence());
+    model->trasim_key[0].actkey_ = trasim_key_actkey; model->trasim_key[0].acttype_ = trasim_key_acttype;
+    model->halffull_key[0] = FcitxKeySeq(m_ui->hotkey_hfshape->keySequence());
+    model->halffull_key[0].actkey_ = halffull_key_actkey; model->halffull_key[0].acttype_ = halffull_key_acttype;
     // active schemas already in model so we don't need to save it to model
   }
   
@@ -237,6 +262,20 @@ namespace fcitx_rime {
 					       "menu/page_size", this->model->candidate_per_word);
     FcitxRimeConfigSetToggleKeys(this->rime, this->rime->default_conf, model->toggle_key0.toString().c_str(), model->toggle_key1.toString().c_str());
     // save active schemas to custom yaml
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->ascii_key[0].acttype_.toStdString().c_str(),
+                                 model->ascii_key[0].actkey_.toStdString().c_str(), model->ascii_key[0].toString().c_str(), 0);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->trasim_key[0].acttype_.toStdString().c_str(),
+                                 model->trasim_key[0].actkey_.toStdString().c_str(), model->trasim_key[0].toString().c_str(), 0);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->halffull_key[0].acttype_.toStdString().c_str(),
+                                 model->halffull_key[0].actkey_.toStdString().c_str(), model->halffull_key[0].toString().c_str(), 0);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->pgup_key[0].acttype_.toStdString().c_str(),
+                                 model->pgup_key[0].actkey_.toStdString().c_str(), model->pgup_key[0].toString().c_str(), 0);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->pgup_key[1].acttype_.toStdString().c_str(),
+                                 model->pgup_key[1].actkey_.toStdString().c_str(), model->pgup_key[1].toString().c_str(), 1);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->pgdown_key[0].acttype_.toStdString().c_str(),
+                                 model->pgdown_key[0].actkey_.toStdString().c_str(), model->pgdown_key[0].toString().c_str(), 0);
+    FcitXRimeConfigSetKeyBinding(this->rime->default_conf, model->pgdown_key[1].acttype_.toStdString().c_str(),
+                                 model->pgdown_key[1].actkey_.toStdString().c_str(), model->pgdown_key[1].toString().c_str(), 1);
     FcitxRimeConfigSync(this->rime);
     return;
   }

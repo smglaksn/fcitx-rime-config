@@ -31,8 +31,8 @@ extern "C" {
   void FcitxRimeBeginKeyBinding(RimeConfig* config);
   size_t FcitxRimeConfigGetKeyBindingSize(RimeConfig *config);
   void FcitXRimeConfigGetNextKeyBinding(RimeConfig* config, char* act_type, char* act_key, char* accept, size_t buffer_size);
-  void FcitXRimeConfigSetKeyBinding(RimeConfig* config, const char* act, const char* key, const char* value);
   void FcitxRimeEndKeyBinding(RimeConfig* config);
+  void FcitXRimeConfigSetKeyBinding(RimeConfig* config, const char* act_type, const char* act_key, const char* value, size_t index);
   // schemas
   void FcitxRimeGetSchemaAttr(FcitxRime* rime, const char* schema_id, char* name, size_t buffer_size, const char* attr);
   int FcitxRimeCheckSchemaEnabled(FcitxRime* rime, RimeConfig* config, const char* schema_id);
